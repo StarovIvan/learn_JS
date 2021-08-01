@@ -1,10 +1,17 @@
-const money = '100 рублей';
-const income = 40000;
-const addExpenses = 'string';
-const deposit = '400';
-const mission = 3;
-const period = 9; 
+const money =  50000;
+let income = 'Грузоперевозки';
+const addExpenses = 'Общественный Транспорт, Поход В Фаст-фуд, Покупка Игр';
+let deposit = true;
+const mission = 500000;
+let period = 9;
 
-alert(money);
+console.log(typeof money);
+console.log(typeof income);
+console.log(typeof deposit);
+console.log(addExpenses.length);
+console.log('период равен ' + period + ' месяцев');
+console.log('цель заработать ' + mission + ' долларов');
+console.log(addExpenses.toLowerCase().split(','));
 
-console.log(income);
+const budgetDay = 50000 / 30;
+console.log(budgetDay.toFixed());
