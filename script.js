@@ -1,7 +1,31 @@
-let num = 266219;
-let degree = 3;
-num = num.toString().split('');
+'use strict';
 
-let totalNumber = (num.reduce((a, b) => a * b));
-totalNumber = totalNumber ** 3;
-console.log(21);
+const weekRu = ['понедельник' , 'вторник' , 'среда' , 'четверг' , 'пятница' , 'суббота' , 'воскресенье'];
+const weekEn = ['monday', 'tyesday',  'wednesday',  'thursday',  'friday',  'saturday', 'sunday'];
+
+let lang = prompt('Введите язык (ru или en)');
+
+if(lang === 'en'){
+    console.log(weekEn);
+}else if(lang === 'ru') {
+    console.log(weekRu);
+} else {
+    console.log('Поопробуйте ещё');
+}
+
+
+switch (lang){
+    case 'ru':
+        console.log(weekRu);
+        break;
+    case 'en':
+        console.log(weekEn);
+        break;
+}
+
+const multArray = {
+    ru: weekRu,
+    en: weekEn
+};
+    
+console.log(multArray[lang]);
