@@ -1,31 +1,23 @@
 'use strict';
 
-const weekRu = ['понедельник' , 'вторник' , 'среда' , 'четверг' , 'пятница' , 'суббота' , 'воскресенье'];
-const weekEn = ['monday', 'tyesday',  'wednesday',  'thursday',  'friday',  'saturday', 'sunday'];
+const number = 334523;
+let shortLine = '     Lorem ipsum dolor sit amet.      ';
+let longLine = '      Lorem ipsum dolor sit amet consectetur adipisicing elit.     ';
 
-let lang = prompt('Введите язык (ru или en)');
+const show = function (num){
 
-if(lang === 'en'){
-    console.log(weekEn);
-}else if(lang === 'ru') {
-    console.log(weekRu);
-} else {
-    console.log('Поопробуйте ещё');
-}
+    if(num === Number(num)){
+        return 'Это число';
+    } else if(num === String(num)){
+        let width = num.trim().length;
 
-
-switch (lang){
-    case 'ru':
-        console.log(weekRu);
-        break;
-    case 'en':
-        console.log(weekEn);
-        break;
-}
-
-const multArray = {
-    ru: weekRu,
-    en: weekEn
+        if(width > 30){
+            return 'больше 30';
+        } else if(width < 30) {
+            return 'меньше 30';
+        }
+    }
 };
-    
-console.log(multArray[lang]);
+console.log(show(number));
+console.log(show(shortLine));
+console.log(show(longLine));
