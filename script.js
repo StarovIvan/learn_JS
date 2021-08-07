@@ -55,7 +55,6 @@ let getExpensesMonth = function (){
         } while (!isNumber(amount));
         sum += +amount;
     }
-    console.log(sum);
     return sum;
 };
 let expensesMonth = money - getExpensesMonth();
