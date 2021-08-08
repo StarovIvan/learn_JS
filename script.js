@@ -10,7 +10,7 @@ for(let i = 0; i < arr.length; i++){
     }
 }
 
-for(let i = 1; i <= 10; i++){
+for(let i = 1; i <= 100; i++){
     let dividers = `Делители числа ${i} является число 1 и ${i}`;
     console.log(dividers);
 }
