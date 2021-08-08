@@ -61,6 +61,7 @@ let appData = {
             return'Всё плохо';
         }
     },
+    
     getBudget: function (){
         appData.budgetMonth = appData.budget - appData.expensesMonth;
         appData.budgetDay = Math.ceil(appData.budgetMonth / 30);
