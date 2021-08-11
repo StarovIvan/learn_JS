@@ -47,12 +47,15 @@ let appData = {
 
         let addExpenses = prompt('Перечислите возможные расходы через запятую').toLowerCase();
         appData.addExpenses = addExpenses.toString().split(',');
-        let capitalizeUp = '';
+        let capitalizeUp ='';
         for(let item of appData.addExpenses){
             let capitaize = item.charAt(0).toUpperCase() + item.slice(1);
-            capitalizeUp += ' , ' + capitaize;
+            capitalizeUp += (', ' + capitaize).trim();
+
+            
         }
-        console.log(capitalizeUp.slice(3));
+        console.log(capitalizeUp.slice(2));
+        console.log(1);
 
         appData.deposit = confirm('Есть ли у вас депозит в банке?');
         let percent;
@@ -97,6 +100,7 @@ let appData = {
             return `Цель будет достигнута через ${Math.ceil(appData.period)} месяцев`;
         }
     },
+
     getStatusIncome: function (){
         if(appData.budgetDay > 1200){
             return'уровень высокий';
