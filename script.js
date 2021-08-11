@@ -8,7 +8,7 @@ let isNumber = function (n){
 let start = function (){
 
     do{
-        money = prompt('Ваш ежемесячный зароботок?');
+        money = prompt('Ваш ежемесячный зароботок?', '55000');
     } while (!isNumber(money));
     
 };
@@ -20,6 +20,8 @@ let appData = {
     expenses: {},
     addExpenses: [],
     deposit: false,
+    percentageDeposit: 0,
+    depositAmount: 0,
     mission: 500000,
     period:3,
     budget: money,
@@ -27,11 +29,56 @@ let appData = {
     budgetMonth: 0,
     expensesMonth: 0,
     asking: function (){
-        let addExpenses = prompt('Перечислите возможные расходы за рассчитываемый период через запятую').toLowerCase();
+
+        if(confirm('Есть ли у вас дополнительный заработок?')){
+            let itemIncome;
+            do{
+                itemIncome = prompt('Какой у вас дополнительный заработок?');
+            }while(Number(itemIncome));
+
+            let itemCash;
+                do{
+                    itemCash = prompt('Какая сумма в месяц?');
+                }while(!isNumber(itemCash));
+            
+            appData.income[itemIncome] = itemCash;
+            console.log(appData.income);
+        } 
+
+        let addExpenses = prompt('Перечислите возможные расходы через запятую').toLowerCase();
         appData.addExpenses = addExpenses.toString().split(',');
+        let capitalizeUp = '';
+        for(let item of appData.addExpenses){
+            let capitaize = item.charAt(0).toUpperCase() + item.slice(1);
+            capitalizeUp += ' , ' + capitaize;
+        }
+        console.log(capitalizeUp.slice(3));
+
         appData.deposit = confirm('Есть ли у вас депозит в банке?');
+        let percent;
+        let amount;
+        if(appData.deposit){
+            
+            do{
+                percent = prompt('Какой процент депозита?(Указать только число)');
+            }while(!isNumber(percent));
+            appData.percentageDeposit = percent;
+            console.log(appData.percentageDeposit);
+
+            do{
+                amount = prompt('Какая сумма заложена?(Указать только число)');
+            }while(!isNumber(amount));
+            appData.depositAmount = amount;
+            console.log(appData.depositAmount);
+
+        }
+
         for(let i = 0; i < 2; i++){
-            let answer = prompt('Введите обязательную статью раходов').toLowerCase();
+            let answer;
+            do{
+                answer = prompt('Введите обязательную статью раходов').toLowerCase();
+            }while(Number(answer));
+
             let question = prompt('Во сколько это обойдётся?');
             
             appData.expenses[answer] = question;
@@ -69,11 +116,13 @@ let appData = {
 
 };
 let asking = appData.asking();
-let getBudget = appData.getBudget();
-let targetMonth = appData.getTargetMonth();
+// let getBudget = appData.getBudget();
+// let targetMonth = appData.getTargetMonth();
 
-console.log(`${appData.budgetDay} рублей, ${appData.period} месяцев, ${appData.getStatusIncome()}`);
-for(let key in appData){
-    console.log(`Наша программа в себя включает
-    ${key} = ${appData[key]}`);
-}
+// console.log(`${appData.budgetDay} рублей, ${appData.period} месяцев, ${appData.getStatusIncome()}`);
+// for(let key in appData){
+//     console.log(`Наша программа в себя включает
+//     ${key} = ${appData[key]}`);
+// }
+
+console.log(appData.income);
