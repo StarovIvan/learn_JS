@@ -116,13 +116,13 @@ let appData = {
 
 };
 let asking = appData.asking();
-// let getBudget = appData.getBudget();
-// let targetMonth = appData.getTargetMonth();
+let getBudget = appData.getBudget();
+let targetMonth = appData.getTargetMonth();
 
-// console.log(`${appData.budgetDay} рублей, ${appData.period} месяцев, ${appData.getStatusIncome()}`);
-// for(let key in appData){
-//     console.log(`Наша программа в себя включает
-//     ${key} = ${appData[key]}`);
-// }
+console.log(`${appData.budgetDay} рублей, ${appData.period} месяцев, ${appData.getStatusIncome()}`);
+for(let key in appData){
+    console.log(`Наша программа в себя включает
+    ${key} = ${appData[key]}`);
+}
 
 console.log(appData.income);
