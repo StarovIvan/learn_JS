@@ -50,18 +50,9 @@ let appData = {
         let capitalizeUp ='';
         for(let item of appData.addExpenses){
             let capitaize = item.charAt(0).toUpperCase() + item.slice(1);
-<<<<<<< HEAD
-            
             capitalizeUp += ', ' + capitaize;
-=======
-            capitalizeUp += (', ' + capitaize).trim();
-
-            
->>>>>>> lesson09
         }
         console.log(capitalizeUp.slice(2));
-        console.log(1);
-
 
         appData.deposit = confirm('Есть ли у вас депозит в банке?');
         let percent;
