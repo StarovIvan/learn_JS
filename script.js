@@ -50,15 +50,18 @@ let appData = {
         let capitalizeUp = '';
         for(let item of appData.addExpenses){
             let capitaize = item.charAt(0).toUpperCase() + item.slice(1);
-            capitalizeUp += ' , ' + capitaize;
+            
+            capitalizeUp += ', ' + capitaize;
         }
         console.log(capitalizeUp.slice(3));
+
 
         appData.deposit = confirm('Есть ли у вас депозит в банке?');
         let percent;
         let amount;
         if(appData.deposit){
             
+
             do{
                 percent = prompt('Какой процент депозита?(Указать только число)');
             }while(!isNumber(percent));
@@ -75,11 +78,17 @@ let appData = {
 
         for(let i = 0; i < 2; i++){
             let answer;
-            do{
-                answer = prompt('Введите обязательную статью раходов').toLowerCase();
-            }while(Number(answer));
+            let question;
 
-            let question = prompt('Во сколько это обойдётся?');
+            do{
+                answer = prompt('Введите обязательную статью раходов').toLowerCase().trimStart();
+            }while(Number(answer) || answer === '' );
+            console.log(typeof answer);
+
+
+            do{
+                question = prompt('Во сколько это обойдётся?');
+            }while(!isNumber(question));
             
             appData.expenses[answer] = question;
             appData.expensesMonth += +question;
@@ -124,5 +133,3 @@ for(let key in appData){
     console.log(`Наша программа в себя включает
     ${key} = ${appData[key]}`);
 }
-
-console.log(appData.income);
