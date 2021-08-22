@@ -153,22 +153,25 @@ let appData = {
     },
 
     getExspenses: function(){
+        let _this = this;
         expensesItem.forEach(function(item){
             let titleExpenses = item.querySelector('.expenses-title').value;
             let cashExpenses = item.querySelector('.expenses-amount').value;
+            
             if(titleExpenses !== '' && cashExpenses !== ''){
-                appData.expenses[titleExpenses] = cashExpenses;
+                _this.expenses[titleExpenses] = cashExpenses;
             }
         });
     },
 
     getIncome: function (){
+        let _this = this;
         incomeItems.forEach(function(item){
             let incomeTitle = item.querySelector('.income-title').value;
             let incomeAmount = item.querySelector('.income-amount').value;
 
             if(incomeTitle !== '' && incomeAmount !== ''){
-                appData.income[incomeTitle] = incomeAmount;
+                _this.income[incomeTitle] = incomeAmount;
             }
         });
     },
@@ -180,25 +183,27 @@ let appData = {
         additionalExpensesValue.value = this.addExpenses.join(', ');
         additionalIncomeValue.value = this.addIncome.join(', ');
         targetMonthValue.value = Math.ceil(this.getTargetMonth());
-        periodSelect.addEventListener('input', this.stepChange);
-        incomePeriodValue.value = appData.calcAccumulations();
+        periodSelect.addEventListener('input', appData.stepChange.bind(appData));
+        incomePeriodValue.value = this.calcAccumulations();
     },
 
     getAddExpenses: function(){
         let addExpenses = additionalExpensesItem.value.split(',');
+        let _this = this;
         addExpenses.forEach(function(item){
             item = item.trim();
             if(item !== ''){
-                appData.addExpenses.push(item);
+                _this.addExpenses.push(item);
             }
         });
     },
 
     getAddIncome: function(){
+        let _this = this;
         additionalIncomeItem.forEach(function(item){
             let addItem = item.value.trim();
             if(addItem !== ''){
-                appData.addIncome.push(addItem);
+                _this.addIncome.push(addItem);
             }
         });
     },
@@ -233,30 +238,31 @@ let appData = {
     },
 
     calcAccumulations: function(){
-        return this.budgetMonth * appData.periodAmount;
+        return this.budgetMonth * this.periodAmount;
     },
 
     getBudgetIncome: function(){
-        for(let key in appData.income){
-            let incomeBudget = +appData.income[key];
-            appData.incomeMonth += incomeBudget;
+        for(let key in this.income){
+            let incomeBudget = +this.income[key];
+            this.incomeMonth += incomeBudget;
         }
     },
 
     getExpensesMonth: function(){
         
-        for(let key in appData.expenses){
-            let incomeBudget = +appData.expenses[key];
-            appData.expensesMonth += incomeBudget;
+        for(let key in this.expenses){
+            let incomeBudget = +this.expenses[key];
+            this.expensesMonth += incomeBudget;
         }
         
     },
 
     // расчитывает сумму за период
     stepChange: function (){
-        appData.periodAmount = +periodSelect.value;
-        periodAmount.textContent = appData.periodAmount;
-        incomePeriodValue.value = appData.calcAccumulations();
+        // let _this = this;
+        this.periodAmount = +periodSelect.value;
+        periodAmount.textContent = this.periodAmount;
+        incomePeriodValue.value = this.calcAccumulations();
     },
     
 
@@ -273,8 +279,8 @@ salaryAmount.addEventListener('input', function(){
 start.addEventListener('click', appData.start.bind(appData));
 cancel.addEventListener('click', appData.reset.bind(appData));
 expensesPlus.addEventListener('click', appData.addExpensesBlock.bind(appData));
-incomePlus.addEventListener('click' ,appData.addIncomeBlock);
-periodSelect.addEventListener('input', appData.stepChange);
+incomePlus.addEventListener('click' ,appData.addIncomeBlock.bind(appData));
+periodSelect.addEventListener('input', appData.stepChange.bind(appData));
 // console.log(`${appData.budgetDay} рублей, ${appData.period} месяцев, ${appData.getStatusIncome()}`);
 // for(let key in appData){
 //     console.log(`Наша программа в себя включает
