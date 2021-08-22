@@ -278,8 +278,8 @@ salaryAmount.addEventListener('input', function(){
 
 start.addEventListener('click', appData.start.bind(appData));
 cancel.addEventListener('click', appData.reset.bind(appData));
-expensesPlus.addEventListener('click', appData.addExpensesBlock.bind(appData));
-incomePlus.addEventListener('click' ,appData.addIncomeBlock.bind(appData));
+expensesPlus.addEventListener('click', appData.addExpensesBlock);
+incomePlus.addEventListener('click' ,appData.addIncomeBlock);
 periodSelect.addEventListener('input', appData.stepChange.bind(appData));
 // console.log(`${appData.budgetDay} рублей, ${appData.period} месяцев, ${appData.getStatusIncome()}`);
 // for(let key in appData){
