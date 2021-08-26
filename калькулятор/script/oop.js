@@ -25,7 +25,6 @@ const targetAmount = document.querySelector('.target-amount');
 const periodSelect = document.querySelector('.period-select');
 let periodAmount = document.querySelector('.period-amount');
 
-
 let isNumber = function (n){
    return !isNaN(parseFloat(n)) && isFinite(n);
 };
@@ -117,7 +116,7 @@ AppData.prototype.reset = function(){
             
         }
     });
-
+    appData.startDisabled();
     checkbox.checked = false;
     this.showResult();
 };
@@ -173,6 +172,19 @@ AppData.prototype.getIncome = function (){
     });
 };
 
+AppData.prototype.getTargetMonth = function(){
+
+    if(+targetAmount.value === 0){
+        return targetMonthValue.getAttribute("placeholder");
+    } else {
+        let _period = this.period;
+        _period = +targetAmount.value / this.budgetMonth;
+        return Math.ceil(_period);
+    }
+    
+    
+};
+
 AppData.prototype.showResult = function(){
 
     budgetMonthValue.value = this.budgetMonth;
@@ -180,8 +192,7 @@ AppData.prototype.showResult = function(){
     expensesMonthValue.value = this.expensesMonth;
     additionalExpensesValue.value = this.addExpenses.join(', ');
     additionalIncomeValue.value = this.addIncome.join(', ');
-    targetMonthValue.value = Math.ceil(this.getTargetMonth());
-    console.log(targetMonthValue.value);
+    targetMonthValue.value = this.getTargetMonth();
     console.log(this.getTargetMonth());
     periodSelect.addEventListener('input', appData.stepChange.bind(appData));
     incomePeriodValue.value = this.calcAccumulations();
@@ -210,21 +221,30 @@ AppData.prototype.getAddIncome = function(){
     });
 };
 
-AppData.prototype.getTargetMonth = function (){
+AppData.prototype.getYourForecast = function (){
 
     
-    if(+targetAmount.value === 0){
-        targetMonthValue.value = 'Срок';
-    } else {
-        this.period = +targetAmount.value / this.budgetMonth;
-    }
+    // if(+targetAmount.value === 0){
+    //     targetMonthValue.value = 'Срок';
+    // } else {
+        
+    // }
+    // debugger
     
+    // if(this.period === 0){
+    //     this.period = 'Срок';
+    // }else{
+    //     this.period = +targetAmount.value / this.budgetMonth;
+    // }
+    // console.log(this.period);
+
     if(this.period < 0){
         return `Цель не будет достигнута`;
     } else if(this.period > 0) {
         return this.period;
     }
 };
+
 
 AppData.prototype.getStatusIncome = function (){
 
