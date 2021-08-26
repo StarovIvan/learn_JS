@@ -181,6 +181,8 @@ AppData.prototype.showResult = function(){
     additionalExpensesValue.value = this.addExpenses.join(', ');
     additionalIncomeValue.value = this.addIncome.join(', ');
     targetMonthValue.value = Math.ceil(this.getTargetMonth());
+    console.log(targetMonthValue.value);
+    console.log(this.getTargetMonth());
     periodSelect.addEventListener('input', appData.stepChange.bind(appData));
     incomePeriodValue.value = this.calcAccumulations();
 };
@@ -210,7 +212,12 @@ AppData.prototype.getAddIncome = function(){
 
 AppData.prototype.getTargetMonth = function (){
 
-    this.period = +targetAmount.value / this.budgetMonth;
+    
+    if(+targetAmount.value === 0){
+        targetMonthValue.value = 'Срок';
+    } else {
+        this.period = +targetAmount.value / this.budgetMonth;
+    }
     
     if(this.period < 0){
         return `Цель не будет достигнута`;
