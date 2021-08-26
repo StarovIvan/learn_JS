@@ -172,18 +172,6 @@ AppData.prototype.getIncome = function (){
     });
 };
 
-AppData.prototype.getTargetMonth = function(){
-
-    if(+targetAmount.value === 0){
-        return targetMonthValue.getAttribute("placeholder");
-    } else {
-        let _period = this.period;
-        _period = +targetAmount.value / this.budgetMonth;
-        return Math.ceil(_period);
-    }
-    
-    
-};
 
 AppData.prototype.showResult = function(){
 
@@ -193,7 +181,6 @@ AppData.prototype.showResult = function(){
     additionalExpensesValue.value = this.addExpenses.join(', ');
     additionalIncomeValue.value = this.addIncome.join(', ');
     targetMonthValue.value = this.getTargetMonth();
-    console.log(this.getTargetMonth());
     periodSelect.addEventListener('input', appData.stepChange.bind(appData));
     incomePeriodValue.value = this.calcAccumulations();
 };
@@ -221,23 +208,22 @@ AppData.prototype.getAddIncome = function(){
     });
 };
 
+// Срок достижения цели в месяцах
+AppData.prototype.getTargetMonth = function(){
+
+    if(+targetAmount.value === 0){
+        return targetMonthValue.getAttribute("placeholder");
+    } else {
+        let _period = this.period;
+        _period = +targetAmount.value / this.budgetMonth;
+        return Math.ceil(_period);
+    }
+
+    
+};
+
 AppData.prototype.getYourForecast = function (){
-
     
-    // if(+targetAmount.value === 0){
-    //     targetMonthValue.value = 'Срок';
-    // } else {
-        
-    // }
-    // debugger
-    
-    // if(this.period === 0){
-    //     this.period = 'Срок';
-    // }else{
-    //     this.period = +targetAmount.value / this.budgetMonth;
-    // }
-    // console.log(this.period);
-
     if(this.period < 0){
         return `Цель не будет достигнута`;
     } else if(this.period > 0) {
@@ -271,7 +257,7 @@ AppData.prototype.calcAccumulations = function(){
     return this.budgetMonth * this.periodAmount;
 };
 
-
+// доход за месяц
 AppData.prototype.getBudgetIncome = function(){
 
     for(let key in this.income){
@@ -280,7 +266,7 @@ AppData.prototype.getBudgetIncome = function(){
     }
 };
 
-
+// расходы за месяц
 AppData.prototype.getExpensesMonth = function(){
     
     for(let key in this.expenses){
