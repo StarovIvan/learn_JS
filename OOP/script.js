@@ -1,22 +1,18 @@
 'use strict';
-function DomElement(selector , height, width, bg, fontSize, position, left, up){
+function DomElement(selector , height, width, bg, fontSize){
     this.selector = selector;
     this.height = height;
     this.width = width;
     this.bg = bg;
     this.fontSize = fontSize;
-    this.position = position;
-    this.left = left;
-    this.up =  up;
 
 }
-
 
 DomElement.prototype.createElements = function(){
     let selec = this.selector.charAt(0);
 
     if(selec === '.'){
-        let text = '';
+        let text = prompt('Введите текст');
         let newDiv = document.createElement("div");
         newDiv.classList.add('block');
         newDiv.innerHTML =` <h1>${text}</h1>`;
@@ -32,7 +28,7 @@ DomElement.prototype.createElements = function(){
         document.body.append(newDiv);
 
     } else if(selec === '#'){
-        let text = '';
+        let text = prompt('введите текст');
         let newP = document.createElement("p");
         newP.id = 'best';
         newP.innerHTML = text;
@@ -46,24 +42,7 @@ DomElement.prototype.createElements = function(){
     }
 };
 
-// const createBlock = new DomElement('.block', '100px', '100px', 'blue', '30px','absolute');
-// const createId = new DomElement('#id', '40px', '170px', 'red', '25px');
-
-// createBlock.createElements();
-// createId.createElements();
-
-let createBlock = new DomElement('.block', '100px', '100px', 'red', '30px' ,'absolute');
+let createBlock = new DomElement('.block', '100px', '300px', 'red', '30px' ,'absolute');
+let createParag = new DomElement('#block', '70px', '200px', 'blue', '30px' ,'absolute');
 createBlock.createElements();
-document.addEventListener('keydown', function(event){
-    let createBlock;
-    switch(event.code){
-
-    }
-    // if(event.code === 'ArrowRight'){
-    //     createBlock = new DomElement('.block', '100px', '100px', 'red', '30px' ,'absolute', '100px');
-    //     createBlock.createElements();
-    // } else if(event.code === 'ArrowDown'){
-    //     createBlock = new DomElement('.block', '100px', '100px', 'red', '30px' ,'absolute', '100px' , '100px');
-    //     createBlock.createElements();
-    // }
-});
+createParag.createElements();
