@@ -265,13 +265,6 @@ class Class{
         incomePeriodValue.value = this.calcAccumulations();
     }
 
-    // suitablePercentage(){
-    //     while(depositPercent.value < 0 || depositPercent.value > 100){
-
-    //         this.startDisabled();
-    //     }
-    // }
-
     changePercent(){
         const selectPercent = this.value;
         
