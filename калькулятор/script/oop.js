@@ -331,12 +331,16 @@ class Class{
         salaryAmount.addEventListener('input', () =>{
             start.disabled = salaryAmount.value === '' ? true : false;
         });
-        depositPercent.addEventListener('input' , () =>{
+        depositPercent.addEventListener('change' , () =>{
             let percentValue = +depositPercent.value;
             if(percentValue > 0 && percentValue < 100){
                 start.disabled = false;
                 
             } else{
+                
+                this.hideDeposit();
+                depositAmount.value = '';
+                depositPercent.value = '';
                 alert('Введите корректное значение');
                 start.disabled = true;
             }
