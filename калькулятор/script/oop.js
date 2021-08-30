@@ -276,11 +276,13 @@ class Class{
         const selectPercent = this.value;
         
         if(selectPercent === 'other'){
+            depositPercent.style.display = 'inline-block';
             depositPercent.value = '';
             this.percentageDeposit = depositPercent.value;
             
         } else {
             depositPercent.value = selectPercent;
+            depositPercent.style.display = 'none';
         }
     }
 
@@ -288,7 +290,6 @@ class Class{
         if(this.deposit){
             this.percentageDeposit = +depositPercent.value;
             this.depositAmount = +depositAmount.value;
-            // console.log(this.depositBank.value);
         }
     }
 
@@ -303,7 +304,7 @@ class Class{
         if(checkbox.checked){
             depositBank.style.display = 'inline-block';
             depositAmount.style.display = 'inline-block';
-            depositPercent.style.display = 'inline-block';
+            // depositPercent.style.display = 'inline-block';
             this.deposit = true;
             depositBank.addEventListener('change' , this.changePercent);
         } else{
@@ -322,16 +323,10 @@ class Class{
         incomePlus.addEventListener('click' ,class1.addIncomeBlock);
         periodSelect.addEventListener('input', class1.stepChange.bind(class1));
         checkbox.addEventListener('change', class1.depositCalc.bind(class1));
-
-
-
     }
-    startDisabled(){
-        start.disabled = true;
-        salaryAmount.addEventListener('input', () =>{
-            start.disabled = salaryAmount.value === '' ? true : false;
-        });
-        depositPercent.addEventListener('change' , () =>{
+
+    hideStartPercent(){
+        depositPercent.addEventListener('input' , () =>{
             let percentValue = +depositPercent.value;
             if(percentValue > 0 && percentValue < 100){
                 start.disabled = false;
@@ -339,6 +334,7 @@ class Class{
             } else{
                 
                 this.hideDeposit();
+                salaryAmount.value = '';
                 depositAmount.value = '';
                 depositPercent.value = '';
                 alert('Введите корректное значение');
@@ -346,9 +342,15 @@ class Class{
             }
         });
     }
+
+    startDisabled(){
+        start.disabled = true;
+        salaryAmount.addEventListener('input', () =>{
+            start.disabled = salaryAmount.value === '' ? true : false;
+        });
+    }
 }
-
 const class1 = new Class();
-
+class1.hideStartPercent();
 class1.startDisabled();
 class1.eventsListeners();
