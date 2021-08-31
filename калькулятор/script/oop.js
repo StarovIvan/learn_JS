@@ -277,7 +277,6 @@ class Class{
             this.percentageDeposit = depositPercent.value;
             
         } else {
-            console.log(depositPercent.value);
             depositPercent.value = selectPercent;
             depositPercent.style.display = 'none';
         }
@@ -303,9 +302,6 @@ class Class{
         if(checkbox.checked){
             depositBank.style.display = 'inline-block';
             depositAmount.style.display = 'inline-block';
-            // const arrValue = depositBank.value;
-            // console.log(arrValue);
-            // depositPercent.style.display = 'inline-block';
             this.deposit = true;
             depositBank.addEventListener('input' , this.changePercent);
         } else{
