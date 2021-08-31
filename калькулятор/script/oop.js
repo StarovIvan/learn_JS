@@ -27,6 +27,7 @@ const depositAmount = document.querySelector('.deposit-amount');
 const depositPercent = document.querySelector('.deposit-percent');
 let expensesItem = document.querySelectorAll('.expenses-items');
 let incomeItems = document.querySelectorAll('.income-items');
+let arrMass = depositBank.querySelectorAll('option');
 
 class Class{
     constructor(){
@@ -118,6 +119,7 @@ class Class{
                 
             }
         });
+        depositBank.value = '';
         this.startDisabled();
         this.hideDeposit();
         this.showResult();
@@ -171,9 +173,9 @@ class Class{
 
     showResult(){
 
-        budgetMonthValue.value = this.budgetMonth;
-        budgetDayValue.value = this.budgetDay;
-        expensesMonthValue.value = this.expensesMonth;
+        budgetMonthValue.value = Math.floor(this.budgetMonth);
+        budgetDayValue.value = Math.floor(this.budgetDay);
+        expensesMonthValue.value = Math.floor(this.expensesMonth);
         additionalExpensesValue.value = this.addExpenses.join(', ');
         additionalIncomeValue.value = this.addIncome.join(', ');
         targetMonthValue.value = this.getTargetMonth();
@@ -242,7 +244,8 @@ class Class{
         this.budgetDay = Math.ceil(this.budgetMonth / 30);
     }
     calcAccumulations(){
-        return this.budgetMonth * this.periodAmount;
+        let sum = this.budgetMonth * this.periodAmount;
+        return Math.floor(sum);
     }
     getBudgetIncome(){
     
@@ -266,17 +269,20 @@ class Class{
     }
 
     changePercent(){
+
         const selectPercent = this.value;
-        
         if(selectPercent === 'other'){
             depositPercent.style.display = 'inline-block';
             depositPercent.value = '';
             this.percentageDeposit = depositPercent.value;
             
         } else {
+            console.log(depositPercent.value);
             depositPercent.value = selectPercent;
             depositPercent.style.display = 'none';
         }
+
+        
     }
 
     getInfoDeposit(){
@@ -297,15 +303,17 @@ class Class{
         if(checkbox.checked){
             depositBank.style.display = 'inline-block';
             depositAmount.style.display = 'inline-block';
+            // const arrValue = depositBank.value;
+            // console.log(arrValue);
             // depositPercent.style.display = 'inline-block';
             this.deposit = true;
-            depositBank.addEventListener('change' , this.changePercent);
+            depositBank.addEventListener('input' , this.changePercent);
         } else{
             this.hideDeposit();
             depositPercent.value = '';
             depositAmount.value = '';
             this.deposit = false;
-            depositBank.removeEventListener('change' , this.changePercent);
+            depositBank.removeEventListener('input' , this.changePercent);
         }
     }
 
@@ -315,6 +323,7 @@ class Class{
         expensesPlus.addEventListener('click', class1.addExpensesBlock);
         incomePlus.addEventListener('click' ,class1.addIncomeBlock);
         periodSelect.addEventListener('input', class1.stepChange.bind(class1));
+        
         checkbox.addEventListener('change', class1.depositCalc.bind(class1));
     }
 
@@ -325,14 +334,10 @@ class Class{
                 start.disabled = false;
                 
             } else{
-                
-                this.hideDeposit();
-                salaryAmount.value = '';
-                depositAmount.value = '';
-                depositPercent.value = '';
                 alert('Введите корректное значение');
-                start.disabled = true;
+                this.reset();
             }
+            
         });
     }
 
@@ -343,7 +348,9 @@ class Class{
         });
     }
 }
+
+
 const class1 = new Class();
-class1.hideStartPercent();
 class1.startDisabled();
+class1.hideStartPercent();
 class1.eventsListeners();
