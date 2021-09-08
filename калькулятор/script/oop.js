@@ -28,7 +28,7 @@ const depositPercent = document.querySelector('.deposit-percent');
 let expensesItem = document.querySelectorAll('.expenses-items');
 let incomeItems = document.querySelectorAll('.income-items');
 
-class Class{
+class Calcilator{
     constructor(){
         this.budget = 0;
         this.budgetDay = 0;
@@ -348,7 +348,7 @@ class Class{
     }
 }
 
-const class1 = new Class();
+const class1 = new Calcilator();
 
 class1.startDisabled();
 class1.eventsListeners();
