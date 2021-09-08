@@ -29,7 +29,7 @@ let expensesItem = document.querySelectorAll('.expenses-items');
 let incomeItems = document.querySelectorAll('.income-items');
 let arrMass = depositBank.querySelectorAll('option');
 
-class Class{
+class Calculator{
     constructor(){
         this.budget = 0;
         this.budgetDay = 0;
@@ -346,7 +346,7 @@ class Class{
 }
 
 
-const class1 = new Class();
+const class1 = new Calculator();
 class1.startDisabled();
 class1.hideStartPercent();
 class1.eventsListeners();
