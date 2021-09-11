@@ -327,7 +327,7 @@ class Calculator{
         depositPercent.addEventListener('input' , () =>{
             let percentValue = +depositPercent.value;
             if(percentValue > 0 && percentValue < 100){
-                start.disabled = false;
+                this.startDisabled();
                 
             } else{
                 alert('Введите корректное значение');
