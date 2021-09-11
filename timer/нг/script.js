@@ -1,35 +1,57 @@
 'use strict';
 
-const date = new Date();
-const week = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-const hours = date.getHours();
-const day = date.getDay();
-const time = date.toLocaleTimeString();
+const timesOfDay = document.querySelector('.times_of_day'),
+    dayOfWeek = document.querySelector('.day_of_week'),
+    currentTime = document.querySelector('.current_time'),
+    timeNewYear = document.querySelector('.time_new_year'),
+    week = ['Воскресенье' , 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'],
+    newYear = Date.parse('1 January 2022'),
+    now = Date.now();
 
-let timesOfDay = function(){
-    const createElem = document.createElement('div');
-    const newYear = Date.parse('1 January 2022');
-    let now = Date.now();
-    let daysLeft = Math.floor(((((newYear - now) / 1000) / 60) / 60) / 24);
+    let time = setInterval(function() {
+        let date = new Date(),
+            hours = date.getHours(),
+            minutes = date.getMinutes(), 
+            seconds = date.getSeconds(),
+            day = date.getDay();
 
-    let timeDay = function (){
-        if(hours > 6 && hours < 11){
-            return 'Доброе утро';
-        } else if(hours > 11 && hours < 17){
-            return 'Добрый день';
-        } else if(hours > 17 && hours < 22){
-            return 'Добрый вечер';
-        } else{
-            return 'Доброй ночи';
-        }
-    };
-console.log(timeDay());
-    createElem.innerHTML = `<p>${timeDay()}</p>
-        <p>День недели: ${week[day]}</p>
-        <p>Текущее время: ${time}</p>
-        <p>До нового года осталось: ${daysLeft} дней</p>`;
 
-    document.body.append(createElem);
-};
+            let timeDay = function (){
+                let timesOfDay = '';
+                if(hours > 6 && hours < 10){
+                    timesOfDay = 'Доброе утро';
+                    return timesOfDay;
+                } else if(hours > 10 && hours < 18){
+                    timesOfDay = 'Добрый день';
+                    return timesOfDay;
+                } else if(hours > 18 && hours < 22){
+                    timesOfDay = 'Добрый вечер';
+                    return timesOfDay;
+                } else {
+                    timesOfDay = 'Доброй ночи';
+                    return timesOfDay;
+                }
+            };
 
-timesOfDay();
+            let getDayOfNewYear = ()=> {
+                let daysLeft = Math.floor(((((newYear - now) / 1000) / 60) / 60) / 24);
+                return daysLeft;
+            };
+
+            if(seconds < 10){
+                seconds = '0' + seconds ;
+            }
+            if(minutes < 10){
+                minutes = '0' + minutes ;
+            }
+            if(hours < 10){
+                hours = '0' + hours ;
+            }
+            
+          
+
+        timesOfDay.innerHTML = timeDay();
+        dayOfWeek.innerHTML =  `Сегодня: ${week[day]}`;
+        currentTime.innerHTML = (`Текущее время: ${hours}:${minutes}:${seconds} PM`);
+        timeNewYear.innerHTML = `До нового года осталось: ${getDayOfNewYear()} дней`;
+      }, 1000);
