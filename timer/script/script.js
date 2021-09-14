@@ -52,8 +52,6 @@ window.addEventListener('DOMContentLoaded', function(){
 
         }, 1000);
 
-
-        // прокрутка к 1 секции
             
         const showMenu = ()=> {
             const menuBtn = document.querySelector('.menu'),
@@ -68,15 +66,12 @@ window.addEventListener('DOMContentLoaded', function(){
 
             };
 
-            // плавная прокрутка
-            
                 menuBtn.addEventListener('click', menuHandler);
 
                 closeBtn.addEventListener('click', menuHandler);
 
                 menuItems.forEach((elem)=> {
                     elem.addEventListener('click', menuHandler);
-                
                 });
                 
         };
