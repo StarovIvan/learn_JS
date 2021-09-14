@@ -54,6 +54,16 @@ window.addEventListener('DOMContentLoaded', function(){
 
 
         // прокрутка к 1 секции
+
+        const scrollBtn = document.querySelector('a');
+            const scrollOne = (event)=> {
+                event.preventDefault();
+                document.querySelector('#service-block').scrollIntoView({
+                    behavior: 'smooth',
+                    block:'start'
+                });
+            };
+        scrollBtn.addEventListener('click', scrollOne);
             
         const showMenu = ()=> {
             const menuBtn = document.querySelector('.menu'),
@@ -69,14 +79,26 @@ window.addEventListener('DOMContentLoaded', function(){
             };
 
             // плавная прокрутка
-            
+                const scrollBlock = (event)=> {
+                    event.preventDefault();
+
+                    const linkId = event.target.getAttribute('href').substr(1);
+                    
+                    document.getElementById(linkId).scrollIntoView({
+                        behavior: 'smooth',
+                        block:'start'
+                    });
+                    
+                };
+
+
                 menuBtn.addEventListener('click', menuHandler);
 
                 closeBtn.addEventListener('click', menuHandler);
 
                 menuItems.forEach((elem)=> {
                     elem.addEventListener('click', menuHandler);
-                
+                    elem.addEventListener('click', scrollBlock);
                 });
                 
         };
