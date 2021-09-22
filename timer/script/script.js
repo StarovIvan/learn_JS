@@ -266,12 +266,83 @@ window.addEventListener('DOMContentLoaded', function(){
                     startSlide();
                 }
             });
-
-
-   
-
             startSlide(1500);
 
         };
         slider();
+
+        // замена фотографий
+        const teams = ()=> {
+            const commandPhoto = document.querySelectorAll('.command__photo');
+
+            commandPhoto.forEach((item)=> {
+                const initialPhoto = item.getAttribute('src');
+
+                item.addEventListener('mouseenter' , (event)=> {
+                    item.src = event.target.getAttribute('data-img');
+                });
+        
+                item.addEventListener('mouseout' , ()=> {
+                    item.src = initialPhoto;
+                });
+
+            });
+        };
+        teams();
+
+
+        // калькулятор
+        // запрет всего кроме цифр
+        const banValuesCalculator = ()=> {
+            const calcItem = document.querySelectorAll('.calc-item');
+            calcItem.forEach((item)=> {
+                item.addEventListener('input', ()=> {
+                    item.value = item.value.replace(/\D/g , '');
+                });
+            });
+        };
+        banValuesCalculator();
+
+        // БЛОК С ОБРАТНОЙ СВЯЗЬЮ
+        const feedBack = ()=> {
+            const footerFormInput = document.querySelector('.footer-form-input');
+            footerFormInput.addEventListener('click', (event)=> {
+                const target = event.target;
+                if(target.matches('#form2-name') || target.matches('#form2-message')){
+
+                    
+                    target.addEventListener('blur', ()=> {
+                        target.value = target.value.replace(/[^а-я\s\-]/ig, '');
+                        target.value = target.value.replace(/^(\s+|\-+)+/g, '');
+                        target.value = target.value.replace(/(\s+|\-+)+$/g, '');
+                        target.value = target.value.replace(/\s+/ig, ' ');
+                        target.value = target.value.replace(/\-+/ig, '-');
+
+                        if(target.matches('#form2-name')){
+                            target.value = target.value.replace(/( |^)[а-яёa-z]/g, function(x){ 
+                            return x.toUpperCase(); });                   
+                        }
+                    });
+                    
+                } else if(target.matches('.form-email')){
+                    target.addEventListener('blur', ()=> {
+                        target.value = target.value.trim().replace(/[^a-z\@\-\_\.\~\*\']/ig, '');
+                        target.value = target.value.replace(/^(\s+|\-+)+/g, '');
+                        target.value = target.value.replace(/(\s+|\-+)+$/g, '');
+                        target.value = target.value.replace(/\s+/ig, ' ');
+                        target.value = target.value.replace(/\-{3,}/ig, '-');
+                    });
+
+                } else if(target.matches('.form-phone')){
+                    target.addEventListener('blur', ()=> {
+                        target.value = target.value.replace(/[^0-9\(\)\-]/ig, '');
+                        target.value = target.value.replace(/^(\-+)+/g, '');
+                        target.value = target.value.replace(/(\-+)+$/g, '');
+                        target.value = target.value.replace(/\-+/ig, '-');
+                    });
+                }
+            });
+        };
+        feedBack();
+
 });
