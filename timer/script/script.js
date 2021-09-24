@@ -308,9 +308,18 @@ window.addEventListener('DOMContentLoaded', function(){
             const footerFormInput = document.querySelector('.footer-form-input');
             footerFormInput.addEventListener('click', (event)=> {
                 const target = event.target;
+
+                // запрет на нажатие клавиш "Enter" и "Tab"
+                target.addEventListener('keydown', (event)=>{
+                    if(event.code === 'Enter' || event.code === 'Tab'){
+                        return event.preventDefault();
+                    }
+                });
+                
                 if(target.matches('#form2-name') || target.matches('#form2-message')){
 
-                    
+                
+
                     target.addEventListener('blur', ()=> {
                         target.value = target.value.replace(/[^а-я\s\-]/ig, '');
                         target.value = target.value.replace(/^(\s+|\-+)+/g, '');
