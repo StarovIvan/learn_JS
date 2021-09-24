@@ -315,10 +315,8 @@ window.addEventListener('DOMContentLoaded', function(){
                         return event.preventDefault();
                     }
                 });
-                
-                if(target.matches('#form2-name') || target.matches('#form2-message')){
 
-                
+                if(target.matches('#form2-name') || target.matches('#form2-message')){
 
                     target.addEventListener('blur', ()=> {
                         target.value = target.value.replace(/[^а-я\s\-]/ig, '');
