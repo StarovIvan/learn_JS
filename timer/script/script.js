@@ -309,6 +309,11 @@ window.addEventListener('DOMContentLoaded', function(){
                 const target = event.target;
 
                 // запрет на нажатие клавиш "Enter" и "Tab"
+                target.addEventListener('keydown', (event)=>{
+                    if(event.code === 'Enter' || event.code === 'Tab'){
+                        return event.preventDefault();
+                    }
+                });
 
                 if(target.matches('#form2-name') || target.matches('#form2-message')){
 
