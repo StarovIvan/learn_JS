@@ -290,7 +290,6 @@ window.addEventListener('DOMContentLoaded', function(){
         };
         teams();
 
-
         // калькулятор
         // запрет всего кроме цифр
         const banValuesCalculator = ()=> {
