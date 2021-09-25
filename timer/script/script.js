@@ -308,7 +308,7 @@ window.addEventListener('DOMContentLoaded', function(){
                 },
 
                 onlyEmail: function(str){
-                    return /[a-z\@\-\_\.\~\*\'\B]/i.test(str);
+                    return /[a-z\@\-\_\.\~\*\']/i.test(str);
                 },
 
                 onlyNumber: function(str){
@@ -319,9 +319,10 @@ window.addEventListener('DOMContentLoaded', function(){
 
         // БЛОК С ОБРАТНОЙ СВЯЗЬЮ
         const feedBack = ()=> {
+            // ввод имени
             document.querySelectorAll('input[placeholder="Ваше имя"]').forEach((item)=>{
                 item.addEventListener('keydown', (event)=> {
-                    if(!helper.checks.onlyCyrillic(event.key)){
+                    if(!helper.checks.onlyCyrillic(event.key) || event.key === 'b' || event.key === 'B'){
                         return event.preventDefault();
                     }
                 });
@@ -329,13 +330,15 @@ window.addEventListener('DOMContentLoaded', function(){
                 item.addEventListener('blur', (event)=> {
                     event.target.value = helper.replaces.enlargerLetters(event.target.value);
                     event.target.value = helper.replaces.minusDelete(event.target.value);
+                    event.target.value = helper.replaces.spaceDelete(event.target.value);
                     event.target.value = helper.replaces.spaceMinDelete(event.target.value);
                 });
             });
 
+            // ввод email
             document.querySelectorAll('input[placeholder="E-mail"]').forEach((item)=> {
                 item.addEventListener('keydown', (event)=> {
-                    if(!helper.checks.onlyEmail(event.key)){
+                    if(!helper.checks.onlyEmail(event.key) || event.key === 'b' || event.key === 'B'){
                         return event.preventDefault();
                     }
                 });
@@ -346,9 +349,10 @@ window.addEventListener('DOMContentLoaded', function(){
                 });
             });
 
+            // ввод номера телефона
             document.querySelectorAll('input[placeholder="Номер телефона"]').forEach((item)=> {
                 item.addEventListener('keydown', (event)=> {
-                    if(!helper.checks.onlyNumber(event.key)){
+                    if(!helper.checks.onlyNumber(event.key) || event.key === 'b' || event.key === 'B'){
                         return event.preventDefault();
                     }
                 });
@@ -359,9 +363,27 @@ window.addEventListener('DOMContentLoaded', function(){
                 });
             });
 
+            // сообщение в блоке "ваше сообщение"
+            const yourMessage = document.querySelector('input[placeholder="Ваше сообщение"]');
+            yourMessage.addEventListener('keydown', (event)=> {
+                if(!helper.checks.onlyCyrillic(event.key) || event.key === 'b' || event.key === 'B'){
+                    return event.preventDefault();
+                }
+
+                
+            });
+
+            yourMessage.addEventListener('blur', (event)=> {
+                event.target.value = helper.replaces.enlargerLetters(event.target.value);
+                event.target.value = helper.replaces.minusDelete(event.target.value);
+                event.target.value = helper.replaces.spaceDelete(event.target.value);
+                event.target.value = helper.replaces.spaceMinDelete(event.target.value);
+            });
+            
+            // калькулятор
             document.querySelectorAll('.calc-item').forEach((item)=> {
                 item.addEventListener('keydown', (event)=> {
-                    if(!(/[0-9\B]/g.test(event.key))){
+                    if(!(/[0-9\B]/g.test(event.key)) || event.key === 'b' || event.key === 'B'){
                         return event.preventDefault();
                     }
                 });
@@ -369,4 +391,46 @@ window.addEventListener('DOMContentLoaded', function(){
         };
         feedBack();
 
+        // калькулятор
+        const calculated = (price = 100)=> {
+            const calcBlock = document.querySelector('.calc-block'),
+                calcType = document.querySelector('.calc-type'),
+                calcSquare = document.querySelector('.calc-square'),
+                calcCount = document.querySelector('.calc-count'),
+                calcDay = document.querySelector('.calc-day'),
+                totalValue = document.getElementById('total');
+                const countSum = ()=> {
+                    let total = 0;
+                    let countValue = 1;
+                    let dayValue = 1;
+                    let typeValue = +calcType.options[calcType.selectedIndex].value,
+                        squareValue = +calcSquare.value;
+
+                    if(calcCount.value > 1){
+                        countValue += (calcCount.value - 1) / 10;
+                    }
+
+                    if(calcDay.value && calcDay.value < 5){
+                        dayValue *= 2;
+                    } else if(calcDay.value && calcDay.value < 10){
+                        dayValue *= 1.5;
+                    }
+
+                    
+                    if(typeValue && squareValue){
+                        total = price * typeValue * squareValue * countValue * dayValue;
+                    } else {
+                        total = 0;
+                    }
+                    totalValue.textContent = total;
+                };
+
+                calcBlock.addEventListener('change', (event)=> {
+                    const target = event.target;
+                    if(target.matches('select') || target.matches('input')){
+                        countSum();
+                    }
+                });
+        };
+        calculated(100);
 });
