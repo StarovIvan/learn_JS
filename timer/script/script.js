@@ -319,6 +319,7 @@ window.addEventListener('DOMContentLoaded', function(){
 
         // БЛОК С ОБРАТНОЙ СВЯЗЬЮ
         const feedBack = ()=> {
+            // ввод имени
             document.querySelectorAll('input[placeholder="Ваше имя"]').forEach((item)=>{
                 item.addEventListener('keydown', (event)=> {
                     if(!helper.checks.onlyCyrillic(event.key) || event.key === 'b' || event.key === 'B'){
@@ -333,6 +334,7 @@ window.addEventListener('DOMContentLoaded', function(){
                 });
             });
 
+            // ввод email
             document.querySelectorAll('input[placeholder="E-mail"]').forEach((item)=> {
                 item.addEventListener('keydown', (event)=> {
                     if(!helper.checks.onlyEmail(event.key) || event.key === 'b' || event.key === 'B'){
@@ -346,6 +348,7 @@ window.addEventListener('DOMContentLoaded', function(){
                 });
             });
 
+            // ввод номера телефона
             document.querySelectorAll('input[placeholder="Номер телефона"]').forEach((item)=> {
                 item.addEventListener('keydown', (event)=> {
                     if(!helper.checks.onlyNumber(event.key) || event.key === 'b' || event.key === 'B'){
@@ -359,9 +362,26 @@ window.addEventListener('DOMContentLoaded', function(){
                 });
             });
 
+            // сообщение в блоке "ваше сообщение"
+            const yourMessage = document.querySelector('input[placeholder="Ваше сообщение"]');
+            yourMessage.addEventListener('keydown', (event)=> {
+                if(!helper.checks.onlyCyrillic(event.key) || event.key === 'b' || event.key === 'B'){
+                    return event.preventDefault();
+                }
+
+                
+            });
+
+            yourMessage.addEventListener('blur', (event)=> {
+                event.target.value = helper.replaces.enlargerLetters(event.target.value);
+                event.target.value = helper.replaces.minusDelete(event.target.value);
+                event.target.value = helper.replaces.spaceMinDelete(event.target.value);
+            });
+            
+            // калькулятор
             document.querySelectorAll('.calc-item').forEach((item)=> {
                 item.addEventListener('keydown', (event)=> {
-                    if(!(/[0-9\B]/g.test(event.key))){
+                    if(!(/[0-9\B]/g.test(event.key)) || event.key === 'b' || event.key === 'B'){
                         return event.preventDefault();
                     }
                 });
