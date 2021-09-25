@@ -330,6 +330,7 @@ window.addEventListener('DOMContentLoaded', function(){
                 item.addEventListener('blur', (event)=> {
                     event.target.value = helper.replaces.enlargerLetters(event.target.value);
                     event.target.value = helper.replaces.minusDelete(event.target.value);
+                    event.target.value = helper.replaces.spaceDelete(event.target.value);
                     event.target.value = helper.replaces.spaceMinDelete(event.target.value);
                 });
             });
@@ -375,6 +376,7 @@ window.addEventListener('DOMContentLoaded', function(){
             yourMessage.addEventListener('blur', (event)=> {
                 event.target.value = helper.replaces.enlargerLetters(event.target.value);
                 event.target.value = helper.replaces.minusDelete(event.target.value);
+                event.target.value = helper.replaces.spaceDelete(event.target.value);
                 event.target.value = helper.replaces.spaceMinDelete(event.target.value);
             });
             
