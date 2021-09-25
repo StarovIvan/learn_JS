@@ -308,7 +308,7 @@ window.addEventListener('DOMContentLoaded', function(){
                 },
 
                 onlyEmail: function(str){
-                    return /[a-z\@\-\_\.\~\*\'\B]/i.test(str);
+                    return /[a-z\@\-\_\.\~\*\']/i.test(str);
                 },
 
                 onlyNumber: function(str){
@@ -321,7 +321,7 @@ window.addEventListener('DOMContentLoaded', function(){
         const feedBack = ()=> {
             document.querySelectorAll('input[placeholder="Ваше имя"]').forEach((item)=>{
                 item.addEventListener('keydown', (event)=> {
-                    if(!helper.checks.onlyCyrillic(event.key)){
+                    if(!helper.checks.onlyCyrillic(event.key) || event.key === 'b' || event.key === 'B'){
                         return event.preventDefault();
                     }
                 });
@@ -335,7 +335,7 @@ window.addEventListener('DOMContentLoaded', function(){
 
             document.querySelectorAll('input[placeholder="E-mail"]').forEach((item)=> {
                 item.addEventListener('keydown', (event)=> {
-                    if(!helper.checks.onlyEmail(event.key)){
+                    if(!helper.checks.onlyEmail(event.key) || event.key === 'b' || event.key === 'B'){
                         return event.preventDefault();
                     }
                 });
@@ -348,7 +348,7 @@ window.addEventListener('DOMContentLoaded', function(){
 
             document.querySelectorAll('input[placeholder="Номер телефона"]').forEach((item)=> {
                 item.addEventListener('keydown', (event)=> {
-                    if(!helper.checks.onlyNumber(event.key)){
+                    if(!helper.checks.onlyNumber(event.key) || event.key === 'b' || event.key === 'B'){
                         return event.preventDefault();
                     }
                 });
