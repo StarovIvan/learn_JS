@@ -422,7 +422,7 @@ window.addEventListener('DOMContentLoaded', function(){
                     } else {
                         total = 0;
                     }
-                    totalValue.textContent = total;
+                    totalValue.textContent = Math.floor(total);
                 };
 
                 calcBlock.addEventListener('change', (event)=> {
@@ -432,5 +432,5 @@ window.addEventListener('DOMContentLoaded', function(){
                     }
                 });
         };
-        calculated(100);
+        calculated(200);
 });
