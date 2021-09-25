@@ -404,10 +404,28 @@ window.addEventListener('DOMContentLoaded', function(){
                     let countValue = 1;
                     let dayValue = 1;
                     let typeValue = +calcType.options[calcType.selectedIndex].value,
-                        squareValue = +calcSquare.value;
+                        squareValue = calcSquare.value;
+
+                    const animated = (num)=> {
+                        let step = 1,
+                            allTime = 300,
+                            current = 0;
+                        let time = Math.round(allTime/(num/step));
+
+                        const animatedNumber = setInterval(()=>{
+                            current = current + step;
+                            if(current === num){
+                               clearInterval(animatedNumber);
+                            }
+                            totalValue.textContent = current;
+                        
+                        },time);
+                        
+                    };
 
                     if(calcCount.value > 1){
-                        countValue += (calcCount.value - 1) / 10;
+                        countValue += (+calcCount.value - 1) / 10;
+                        console.log(countValue);
                     }
 
                     if(calcDay.value && calcDay.value < 5){
@@ -419,10 +437,14 @@ window.addEventListener('DOMContentLoaded', function(){
                     
                     if(typeValue && squareValue){
                         total = price * typeValue * squareValue * countValue * dayValue;
+                        
+                        animated(Math.floor(total));
                     } else {
                         total = 0;
                     }
+                    
                     totalValue.textContent = Math.floor(total);
+                    
                 };
 
                 calcBlock.addEventListener('change', (event)=> {
@@ -432,5 +454,5 @@ window.addEventListener('DOMContentLoaded', function(){
                     }
                 });
         };
-        calculated(200);
+        calculated(100);
 });
