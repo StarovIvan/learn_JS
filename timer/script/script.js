@@ -1,7 +1,7 @@
 window.addEventListener('DOMContentLoaded', function(){
     'use strict';
 
-
+    
     let countTime = setInterval(
         
         function (){
@@ -209,9 +209,6 @@ window.addEventListener('DOMContentLoaded', function(){
                 nextSlide(slide, currentSlide ,'portfolio-item-active');
 
                 nextSlide(dot, currentSlide ,'dot-active');
-
-
-
             };
 
             const startSlide = (time = 1500)=> {
@@ -290,63 +287,84 @@ window.addEventListener('DOMContentLoaded', function(){
         };
         teams();
 
-        // калькулятор
-        // запрет всего кроме цифр
-        const banValuesCalculator = ()=> {
-            const calcItem = document.querySelectorAll('.calc-item');
-            calcItem.forEach((item)=> {
-                item.addEventListener('input', ()=> {
-                    item.value = item.value.replace(/\D/g , '');
-                });
-            });
+        const helper = {
+            replaces: {
+                enlargerLetters: function(str){
+                    return str.replace(/( |^)[а-яёa-z]/g, function(x) {return x.toUpperCase();});
+                },
+                spaceMinDelete: function(str){
+                    return str.replace(/^(\s+|\-+)+|(\s+|\-+)+$/g, '');
+                },
+                spaceDelete: function(str){
+                    return str.replace(/(\s+)+/g, ' ');
+                },
+                minusDelete: function(str){
+                    return str.replace(/(\-+)+/g, '-');
+                }
+            },
+            checks: {
+                onlyCyrillic: function(str){
+                    return /[а-яё\-\s\B]/i.test(str);
+                },
+
+                onlyEmail: function(str){
+                    return /[a-z\@\-\_\.\~\*\'\B]/i.test(str);
+                },
+
+                onlyNumber: function(str){
+                    return /[0-9/\-\(\)\B]/i.test(str);
+                }
+            },
         };
-        banValuesCalculator();
 
         // БЛОК С ОБРАТНОЙ СВЯЗЬЮ
         const feedBack = ()=> {
-            const footerFormInput = document.querySelector('.footer-form-input');
-            footerFormInput.addEventListener('click', (event)=> {
-                const target = event.target;
-
-                // запрет на нажатие клавиш "Enter" и "Tab"
-                target.addEventListener('keydown', (event)=>{
-                    if(event.code === 'Enter' || event.code === 'Tab'){
+            document.querySelectorAll('input[placeholder="Ваше имя"]').forEach((item)=>{
+                item.addEventListener('keydown', (event)=> {
+                    if(!helper.checks.onlyCyrillic(event.key)){
                         return event.preventDefault();
                     }
                 });
 
-                if(target.matches('#form2-name') || target.matches('#form2-message')){
+                item.addEventListener('blur', (event)=> {
+                    event.target.value = helper.replaces.enlargerLetters(event.target.value);
+                    event.target.value = helper.replaces.minusDelete(event.target.value);
+                    event.target.value = helper.replaces.spaceMinDelete(event.target.value);
+                });
+            });
 
-                    target.addEventListener('blur', ()=> {
-                        target.value = target.value.replace(/[^а-я\s\-]/ig, '');
-                        target.value = target.value.replace(/^(\s+|\-+)+/g, '');
-                        target.value = target.value.replace(/(\s+|\-+)+$/g, '');
-                        target.value = target.value.replace(/\s+/ig, ' ');
-                        target.value = target.value.replace(/\-+/ig, '-');
+            document.querySelectorAll('input[placeholder="E-mail"]').forEach((item)=> {
+                item.addEventListener('keydown', (event)=> {
+                    if(!helper.checks.onlyEmail(event.key)){
+                        return event.preventDefault();
+                    }
+                });
 
-                        if(target.matches('#form2-name')){
-                            target.value = target.value.replace(/( |^)[а-яёa-z]/g, function(x){ 
-                            return x.toUpperCase(); });                   
-                        }
-                    });
-                    
-                } else if(target.matches('.form-email')){
-                    target.addEventListener('blur', ()=> {
-                        target.value = target.value.trim().replace(/[^a-z\@\-\_\.\~\*\']/ig, '');
-                        target.value = target.value.replace(/^(\s+|\-+)+/g, '');
-                        target.value = target.value.replace(/(\s+|\-+)+$/g, '');
-                        target.value = target.value.replace(/\s+/ig, ' ');
-                        target.value = target.value.replace(/\-{3,}/ig, '-');
-                    });
+                item.addEventListener('blur', (event)=> {
+                    event.target.value = helper.replaces.spaceMinDelete(event.target.value);
+                    event.target.value = helper.replaces.minusDelete(event.target.value);
+                });
+            });
 
-                } else if(target.matches('.form-phone')){
-                    target.addEventListener('blur', ()=> {
-                        target.value = target.value.replace(/[^0-9\(\)\-]/ig, '');
-                        target.value = target.value.replace(/^(\-+)+/g, '');
-                        target.value = target.value.replace(/(\-+)+$/g, '');
-                        target.value = target.value.replace(/\-+/ig, '-');
-                    });
-                }
+            document.querySelectorAll('input[placeholder="Номер телефона"]').forEach((item)=> {
+                item.addEventListener('keydown', (event)=> {
+                    if(!helper.checks.onlyNumber(event.key)){
+                        return event.preventDefault();
+                    }
+                });
+
+                item.addEventListener('blur', (event)=> {
+                    event.target.value = helper.replaces.spaceMinDelete(event.target.value);
+                    event.target.value = helper.replaces.minusDelete(event.target.value);
+                });
+            });
+
+            document.querySelectorAll('.calc-item').forEach((item)=> {
+                item.addEventListener('keydown', (event)=> {
+                    if(!(/[0-9\B]/g.test(event.key))){
+                        return event.preventDefault();
+                    }
+                });
             });
         };
         feedBack();
