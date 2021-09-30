@@ -321,11 +321,11 @@ window.addEventListener('DOMContentLoaded', function(){
         const feedBack = ()=> {
             // ввод имени
             document.querySelectorAll('input[placeholder="Ваше имя"]').forEach((item)=>{
-                item.addEventListener('keydown', (event)=> {
-                    if(!helper.checks.onlyCyrillic(event.key) || event.key === 'b' || event.key === 'B'){
-                        return event.preventDefault();
-                    }
-                });
+                // item.addEventListener('keydown', (event)=> {
+                //     if(!helper.checks.onlyCyrillic(event.key) || event.key === 'b' || event.key === 'B'){
+                //         return event.preventDefault();
+                //     }
+                // });
 
                 item.addEventListener('blur', (event)=> {
                     event.target.value = helper.replaces.enlargerLetters(event.target.value);
@@ -365,13 +365,13 @@ window.addEventListener('DOMContentLoaded', function(){
 
             // сообщение в блоке "ваше сообщение"
             const yourMessage = document.querySelector('input[placeholder="Ваше сообщение"]');
-            yourMessage.addEventListener('keydown', (event)=> {
-                if(!helper.checks.onlyCyrillic(event.key) || event.key === 'b' || event.key === 'B'){
-                    return event.preventDefault();
-                }
+            // yourMessage.addEventListener('keydown', (event)=> {
+            //     if(!helper.checks.onlyCyrillic(event.key) || event.key === 'b' || event.key === 'B'){
+            //         return event.preventDefault();
+            //     }
 
                 
-            });
+            // });
 
             yourMessage.addEventListener('blur', (event)=> {
                 event.target.value = helper.replaces.enlargerLetters(event.target.value);
