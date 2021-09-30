@@ -1,3 +1,4 @@
+'use strict';
 class Validator{
     constructor({selector, pattern ={}, method}){
         this.form = document.querySelector(selector);
@@ -16,7 +17,7 @@ class Validator{
         this.elementsForm.forEach((elem)=> {
             elem.addEventListener('change', this.checkIt.bind(this));
         });
-        // this.applyStyle();
+        this.applyStyle();
         this.form.addEventListener('submit', (event)=> {
             if(this.error.size > 0){
                 event.preventDefault();
@@ -42,7 +43,6 @@ class Validator{
         const method = this.method[elem.id];
         
         if(method){
-            
             return method.every((item)=> {
                 return validatorMethod[item[0]](elem, this.pattern[item[1]]);
             });
@@ -62,35 +62,19 @@ class Validator{
     }
 
     showError(elem){
-        
-        elem.classList.remove('success');
         elem.classList.add('error');
-        // if(elem.nextElementSibling){
-        //     return;
-        // }
-        // const errorDiv = document.createElement('div');
-        
-        // errorDiv.textContent = 'Введите корректно данные';
-        // errorDiv.classList.add('validator-error');
-        // // errorDiv.style.cssText = `
-        // // color: red;`;
-        // elem.insertAdjacentElement('afterend', errorDiv);
-        
-            // console.log(elem.nextElementSibling.classList.contains('validator-error'));
-            
-                // const errorDiv = document.createElement('div');
-                // errorDiv.textContent = 'В этом поле ошибка';
-                // errorDiv.classList.add('validator-error');
-            
-                // elem.insertAdjacentElement('afterend', errorDiv);
-           
-
+        if(elem.nextElementSibling && elem.nextElementSibling.classList.contains('validator-error')){
+            return;
+        }
+        const errorDiv = document.createElement('div');
+        errorDiv.textContent = 'введите корректно данные';
+        errorDiv.classList.add('validator-error');
+        elem.insertAdjacentElement('afterend', errorDiv);
     }
 
     showSuccess(elem){
         elem.classList.remove('error');
-        elem.classList.add('success');
-        if(elem.nextElementSibling){
+        if(elem.nextElementSibling && elem.nextElementSibling.classList.contains('validator-error')){
             elem.nextElementSibling.remove();
         }
     }
@@ -107,7 +91,6 @@ class Validator{
         if(!this.pattern.phone){
             this.pattern.phone = /[0-9\+]/g;
         }
-        
     }
 
     applyStyle(){
@@ -118,9 +101,7 @@ class Validator{
         }
 
         input.success{
-            background: 
-            #31f7dd
-            ;
+            background: #19b5fe;
         }
         `;
         document.head.appendChild(style);

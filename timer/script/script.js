@@ -365,11 +365,11 @@ window.addEventListener('DOMContentLoaded', function(){
             // ввод имени
             const nameValidity = (selector)=> {
                 document.querySelectorAll(selector).forEach((item)=>{
-                    item.addEventListener('keydown', (event)=> {
-                        if(!helper.checks.onlyCyrillic(event.key) || event.key === 'b' || event.key === 'B'){
-                            return event.preventDefault();
-                        }
-                    });
+                    // item.addEventListener('keydown', (event)=> {
+                    //     if(!helper.checks.onlyCyrillic(event.key) || event.key === 'b' || event.key === 'B'){
+                    //         return event.preventDefault();
+                    //     }
+                    // });
 
                     item.addEventListener('blur', (event)=> {
                         event.target.value = helper.replaces.enlargerLetters(event.target.value);
@@ -385,11 +385,11 @@ window.addEventListener('DOMContentLoaded', function(){
             // ввод email
             const emailValidity = (selector)=> {
                 document.querySelectorAll(selector).forEach((item)=> {
-                    item.addEventListener('keydown', (event)=> {
-                        if(!helper.checks.onlyEmail(event.key) || event.key === 'b' || event.key === 'B'){
-                            return event.preventDefault();
-                        }
-                    });
+                    // item.addEventListener('keydown', (event)=> {
+                    //     if(!helper.checks.onlyEmail(event.key) || event.key === 'b' || event.key === 'B'){
+                    //         return event.preventDefault();
+                    //     }
+                    // });
 
                     item.addEventListener('blur', (event)=> {
                         event.target.value = helper.replaces.spaceMinDelete(event.target.value);
@@ -401,13 +401,12 @@ window.addEventListener('DOMContentLoaded', function(){
 
             // ввод номера телефона
             const pasteNumberPhone = (selector)=> {
-                // maskPhone(selector);
                 document.querySelectorAll(selector).forEach((item)=> {
-                    item.addEventListener('keydown', (event)=> {
-                        if(!helper.checks.onlyNumber(event.key) || event.key === 'b' || event.key === 'B'){
-                            return event.preventDefault();
-                        }
-                    });
+                    // item.addEventListener('keydown', (event)=> {
+                    //     if(!helper.checks.onlyNumber(event.key) || event.key === 'b' || event.key === 'B'){
+                    //         return event.preventDefault();
+                    //     }
+                    // });
 
                     item.addEventListener('blur', (event)=> {
                         event.target.value = helper.replaces.spaceMinDelete(event.target.value);
@@ -566,8 +565,8 @@ window.addEventListener('DOMContentLoaded', function(){
                     }
                     let inputValidate = validator.error.length;
                     console.log(validator.error);
-                    if(validator.error.size > 0){
-                        // event.preventDefault();
+                    if(inputValidate > 0){
+                        event.preventDefault();
                         return;
                     }
 
@@ -591,7 +590,7 @@ window.addEventListener('DOMContentLoaded', function(){
                         statusMessage.style.color = 'red';
                         statusMessage.textContent = errorMessage;
                         console.log(error);
-                    }, validator.error.size);
+                    });
                     
 
                 });
@@ -602,7 +601,7 @@ window.addEventListener('DOMContentLoaded', function(){
             dataPreparation(form3);
             
 
-            const postData = (body, success, error, inputValidate)=> {
+            const postData = (body, success, error)=> {
                 const request = new XMLHttpRequest();
                 request.addEventListener('readystatechange', ()=> {
                     statusMessage.textContent = loadedMessage;
