@@ -23,8 +23,6 @@ class Validator {
             if(this.error.size){
                 event.preventDefault();
             }
-            // event.preventDefault();
-            
         });
     }
 
@@ -41,7 +39,6 @@ class Validator {
                 return pattern.test(elem.value);
             }
         };
-        
         
         const method = this.method[elem.id];
         if(method){
@@ -65,7 +62,6 @@ class Validator {
     }
 
     showError(elem){
-        elem.classList.remove('success');
         elem.classList.add('error');
         if(elem.nextElementSibling && elem.nextElementSibling.classList.contains('validator-error')){
             return;
@@ -78,7 +74,6 @@ class Validator {
 
     showSuccess(elem){
         elem.classList.remove('error');
-        elem.classList.add('success');
         if(elem.nextElementSibling && elem.nextElementSibling.classList.contains('validator-error')){
             elem.nextElementSibling.remove();
         }
@@ -165,55 +160,3 @@ document.querySelectorAll('form[name="user_form"]').forEach((item)=> {
     });
     valid.init();
 });
-// const valid = new Validator({
-//     selector: '#form1',
-//     pattern:{
-//         name:/[а-яё]/ig,
-//         email:/\w+\@\w+\.\w{2,}/,
-//         phone:/^\+?[78]([-()]*\d){10}/,
-
-//     },
-//     method:{
-//         'form1-phone':[
-//             ['notEmpty'],
-//             ['pattern', 'phone']
-//         ],
-//         'form1-email':[
-//             ['notEmpty'],
-//             ['pattern', 'email']
-//         ],
-//         'form1-name':[
-//             ['notEmpty'],
-//             ['pattern', 'name']
-//         ],
-//         'form2-phone':[
-//             ['notEmpty'],
-//             ['pattern', 'phone']
-//         ],
-//         'form2-email':[
-//             ['notEmpty'],
-//             ['pattern', 'email']
-//         ],
-//         'form2-name':[
-//             ['notEmpty'],
-//             ['pattern', 'name']
-//         ],
-//         'form2-message':[
-//             ['notEmpty'],
-//             ['pattern', 'name']
-//         ],
-//         'form3-phone':[
-//             ['notEmpty'],
-//             ['pattern', 'phone']
-//         ],
-//         'form3-email':[
-//             ['notEmpty'],
-//             ['pattern', 'email']
-//         ],
-//         'form3-name':[
-//             ['notEmpty'],
-//             ['pattern', 'name']
-//         ],
-//     }
-// });
-// valid.init();
