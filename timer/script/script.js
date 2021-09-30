@@ -304,7 +304,7 @@ window.addEventListener('DOMContentLoaded', function(){
             },
             checks: {
                 onlyCyrillic: function(str){
-                    return /[а-яё\-\s\B]/i.test(str);
+                    return /[а-яё0-9\,\.\s\B]/i.test(str);
                 },
 
                 onlyEmail: function(str){
@@ -312,56 +312,110 @@ window.addEventListener('DOMContentLoaded', function(){
                 },
 
                 onlyNumber: function(str){
-                    return /[0-9/\-\(\)\B]/i.test(str);
+                    return /[0-9\B\-]/i.test(str);
                 }
             },
         };
 
+
+        // function maskPhone(selector, masked = '+7 (___) ___-__-__') {
+        //     const elems = document.querySelectorAll(selector);
+
+        //     function mask(event) {
+        //         const keyCode = event.keyCode;
+        //         const template = masked,
+        //             def = template.replace(/\D/g, ""),
+        //             val = this.value.replace(/\D/g, "");
+        //         let i = 0,
+        //             newValue = template.replace(/[_\d]/g, function (a) {
+        //                 return i < val.length ? val.charAt(i++) || def.charAt(i) : a;
+        //             });
+        //         i = newValue.indexOf("_");
+        //         if (i != -1) {
+        //             newValue = newValue.slice(0, i);
+        //         }
+        //         let reg = template.substr(0, this.value.length).replace(/_+/g,
+        //             function (a) {
+        //                 return "\\d{1," + a.length + "}";
+        //             }).replace(/[+()]/g, "\\$&");
+        //         reg = new RegExp("^" + reg + "$");
+        //         if (!reg.test(this.value) || this.value.length < 5 || keyCode > 47 && keyCode < 58) {
+        //             this.value = newValue;
+        //         }
+        //         if (event.type == "blur" && this.value.length < 5) {
+        //             this.value = "";
+        //         }
+        
+        //     }
+        
+        //     for (const elem of elems) {
+        //         elem.addEventListener("input", mask);
+        //         elem.addEventListener("focus", mask);
+        //         elem.addEventListener("blur", mask);
+        //     }
+            
+        // }
+        
+        // use
+        
+
+
         // БЛОК С ОБРАТНОЙ СВЯЗЬЮ
         const feedBack = ()=> {
             // ввод имени
-            document.querySelectorAll('input[placeholder="Ваше имя"]').forEach((item)=>{
-                item.addEventListener('keydown', (event)=> {
-                    if(!helper.checks.onlyCyrillic(event.key) || event.key === 'b' || event.key === 'B'){
-                        return event.preventDefault();
-                    }
-                });
+            const nameValidity = (selector)=> {
+                document.querySelectorAll(selector).forEach((item)=>{
+                    item.addEventListener('keydown', (event)=> {
+                        if(!helper.checks.onlyCyrillic(event.key) || event.key === 'b' || event.key === 'B'){
+                            return event.preventDefault();
+                        }
+                    });
 
-                item.addEventListener('blur', (event)=> {
-                    event.target.value = helper.replaces.enlargerLetters(event.target.value);
-                    event.target.value = helper.replaces.minusDelete(event.target.value);
-                    event.target.value = helper.replaces.spaceDelete(event.target.value);
-                    event.target.value = helper.replaces.spaceMinDelete(event.target.value);
+                    item.addEventListener('blur', (event)=> {
+                        event.target.value = helper.replaces.enlargerLetters(event.target.value);
+                        event.target.value = helper.replaces.minusDelete(event.target.value);
+                        event.target.value = helper.replaces.spaceDelete(event.target.value);
+                        event.target.value = helper.replaces.spaceMinDelete(event.target.value);
+                    });
                 });
-            });
+            };
+            
+            
 
             // ввод email
-            document.querySelectorAll('input[placeholder="E-mail"]').forEach((item)=> {
-                item.addEventListener('keydown', (event)=> {
-                    if(!helper.checks.onlyEmail(event.key) || event.key === 'b' || event.key === 'B'){
-                        return event.preventDefault();
-                    }
-                });
+            const emailValidity = (selector)=> {
+                document.querySelectorAll(selector).forEach((item)=> {
+                    item.addEventListener('keydown', (event)=> {
+                        if(!helper.checks.onlyEmail(event.key) || event.key === 'b' || event.key === 'B'){
+                            return event.preventDefault();
+                        }
+                    });
 
-                item.addEventListener('blur', (event)=> {
-                    event.target.value = helper.replaces.spaceMinDelete(event.target.value);
-                    event.target.value = helper.replaces.minusDelete(event.target.value);
+                    item.addEventListener('blur', (event)=> {
+                        event.target.value = helper.replaces.spaceMinDelete(event.target.value);
+                        event.target.value = helper.replaces.minusDelete(event.target.value);
+                    });
                 });
-            });
+            };
+            
 
             // ввод номера телефона
-            document.querySelectorAll('input[placeholder="Номер телефона"]').forEach((item)=> {
-                item.addEventListener('keydown', (event)=> {
-                    if(!helper.checks.onlyNumber(event.key) || event.key === 'b' || event.key === 'B'){
-                        return event.preventDefault();
-                    }
-                });
+            const pasteNumberPhone = (selector)=> {
+                // maskPhone(selector);
+                document.querySelectorAll(selector).forEach((item)=> {
+                    item.addEventListener('keydown', (event)=> {
+                        if(!helper.checks.onlyNumber(event.key) || event.key === 'b' || event.key === 'B'){
+                            return event.preventDefault();
+                        }
+                    });
 
-                item.addEventListener('blur', (event)=> {
-                    event.target.value = helper.replaces.spaceMinDelete(event.target.value);
-                    event.target.value = helper.replaces.minusDelete(event.target.value);
+                    item.addEventListener('blur', (event)=> {
+                        event.target.value = helper.replaces.spaceMinDelete(event.target.value);
+                        event.target.value = helper.replaces.minusDelete(event.target.value);
+                    });
                 });
-            });
+            };
+            
 
             // сообщение в блоке "ваше сообщение"
             const yourMessage = document.querySelector('input[placeholder="Ваше сообщение"]');
@@ -369,8 +423,6 @@ window.addEventListener('DOMContentLoaded', function(){
                 if(!helper.checks.onlyCyrillic(event.key) || event.key === 'b' || event.key === 'B'){
                     return event.preventDefault();
                 }
-
-                
             });
 
             yourMessage.addEventListener('blur', (event)=> {
@@ -388,6 +440,13 @@ window.addEventListener('DOMContentLoaded', function(){
                     }
                 });
             });
+
+            //проверка и запрет на ввод символов 
+            nameValidity('input[placeholder="Ваше имя"]');
+            emailValidity('input[placeholder="E-mail"]');
+            emailValidity('input[placeholder="Ваш E-mail"]');
+            pasteNumberPhone('input[placeholder="Номер телефона"]');
+            pasteNumberPhone('input[placeholder="Ваш номер телефона"]');
         };
         feedBack();
 
@@ -433,4 +492,136 @@ window.addEventListener('DOMContentLoaded', function(){
                 });
         };
         calculated(200);
+
+        const sendForm = ()=> {
+            const errorMessage = 'Что-то пошло не так',
+                loadedMessage = 'Загрука...',
+                successMessage = 'Данные отправлены, мы с вами скоро свяжемся';
+
+            const form = document.getElementById('form1');
+            const form2 = document.getElementById('form2');
+            const form3 = document.getElementById('form3');   
+            const statusMessage = document.createElement('div');
+            statusMessage.style.fontSize = '25px';
+            // очистка полей ввода
+            
+            const dataPreparation = (form)=> {
+                const validator = new Validator({
+                    selector: `#${form.id}`,
+                    pattern: {
+                        name: /[а-яё\s]/ig,
+                        phone: /[0-9\+\-]{11}/g,
+                        email: /\w+\@\w+\.\w{2,}$/ig,
+                        message: /[а-яё0-9\.\,]/ig,
+                    },
+                    method: {
+                        'form1-name': [
+                            ['notEmpty'],
+                            ['pattern', 'name']
+                        ],
+                        'form1-phone': [
+                            ['notEmpty'],
+                            ['pattern', 'phone']
+                        ],
+                        'form1-email': [
+                            ['notEmpty'],
+                            ['pattern', 'email']
+                        ],
+                        'form2-name': [
+                            ['notEmpty'],
+                            ['pattern', 'name']
+                        ],
+                        'form2-phone': [
+                            ['notEmpty'],
+                            ['pattern', 'phone']
+                        ],
+                        'form2-email': [
+                            ['notEmpty'],
+                            ['pattern', 'email']
+                        ],
+                        'form2-message': [
+                            ['notEmpty'],
+                            ['pattern', 'message']
+                        ],
+                        'form3-name': [
+                            ['notEmpty'],
+                            ['pattern', 'name']
+                        ],
+                        'form3-phone': [
+                            ['notEmpty'],
+                            ['pattern', 'phone']
+                        ],
+                        'form3-email': [
+                            ['notEmpty'],
+                            ['pattern', 'email']
+                        ],
+                    },
+                });
+                validator.init();
+                form.addEventListener('submit', (event)=> {
+                    
+                    event.preventDefault();
+                    if(event.target.matches('#form1')){
+                        form.appendChild(statusMessage);
+                    }
+                    let inputValidate = validator.error.length;
+                    console.log(validator.error);
+                    if(validator.error.size > 0){
+                        // event.preventDefault();
+                        return;
+                    }
+
+                    const formData = new FormData(form);
+                    const body = {};
+
+                    
+
+                    formData.forEach((elem, key)=> {
+                        body[key] = elem;
+                    });
+                    console.log(validator.error.size);
+                    console.log(body);
+
+                    postData(body, ()=> {
+                        statusMessage.textContent = successMessage;
+                        form.querySelectorAll('input').forEach((item)=> {
+                            item.value = '';
+                        });
+                    }, (error)=> {
+                        statusMessage.style.color = 'red';
+                        statusMessage.textContent = errorMessage;
+                        console.log(error);
+                    }, validator.error.size);
+                    
+
+                });
+                
+            };
+            dataPreparation(form);
+            dataPreparation(form2);
+            dataPreparation(form3);
+            
+
+            const postData = (body, success, error, inputValidate)=> {
+                const request = new XMLHttpRequest();
+                request.addEventListener('readystatechange', ()=> {
+                    statusMessage.textContent = loadedMessage;
+                    
+                    if(request.readyState !== 4){
+                        return;
+                    }
+                    if(request.status === 200){
+                        success();
+
+                    } else{
+                        error(request.status);
+                    }
+
+                });
+                request.open('POST', './server.php');
+                request.setRequestHeader('Content-Type', 'application/json');
+                request.send(JSON.stringify(body));
+            };
+        };
+        sendForm();
 });
