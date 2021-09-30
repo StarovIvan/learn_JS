@@ -21,15 +21,15 @@ class Validator {
                 this.checkIt({target: elem});
             });
             if(this.error.size){
-                return event.preventDefault();
+                event.preventDefault();
             }
+            // event.preventDefault();
             
         });
     }
 
     isValid(elem){
         const validatorMethod = {
-            
             notEmpty(elem){
                 if(elem.value.trim() === ''){
                     return false;
@@ -65,18 +65,20 @@ class Validator {
     }
 
     showError(elem){
+        elem.classList.remove('success');
         elem.classList.add('error');
         if(elem.nextElementSibling && elem.nextElementSibling.classList.contains('validator-error')){
             return;
         }
         const errorDiv = document.createElement('div');
-        errorDiv.textContent = 'ввод только русских букв';
+        errorDiv.textContent = 'Ошибка в поле ввода';
         errorDiv.classList.add('validator-error');
         elem.insertAdjacentElement('afterend', errorDiv);
     }
 
     showSuccess(elem){
         elem.classList.remove('error');
+        elem.classList.add('success');
         if(elem.nextElementSibling && elem.nextElementSibling.classList.contains('validator-error')){
             elem.nextElementSibling.remove();
         }
@@ -84,52 +86,134 @@ class Validator {
 
     appplyStyle(){
         const style = document.createElement('style');
-        style.textContent = ` 
+        style.textContent = `
+
         input.error {
             background: red;
         }
 
         .validator-error {
             font-size: 13px;
-            font-weight:bold;
-            text-transform: lowercase;
-            font-family: sans-serif;
             color: red;
-        }
+            font-family: sans-serif;
         `;
         document.head.appendChild(style);
     }
 
     setPattern(){
-        this.pattern.name = /[а-яё]/ig;
-    }
-}
-document.querySelectorAll('form[name="user_form"]').forEach((item)=>{
+        if(!this.pattern.phone){
+            this.pattern.phone = /^\+?[78]([-()]*\d){10}/;
+        }
 
+        if(!this.pattern.email){
+            this.pattern.email = /^\w+\@\w+\.\w{2,}$/;
+        }
+    }
+
+}
+document.querySelectorAll('form[name="user_form"]').forEach((item)=> {
     const valid = new Validator({
         selector: `#${item.id}`,
         pattern:{
-            name:/[а-яё]/ig
+            name:/[а-яё]/ig,
+            email:/\w+\@\w+\.\w{2,}/,
+            phone:/^\+?[78]([-()]*\d){10}/,
+            message:/[а-яё]/ig,
         },
         method:{
+            'form1-phone':[
+                ['notEmpty'],
+                ['pattern', 'phone']
+            ],
+            'form1-email':[
+                ['notEmpty'],
+                ['pattern', 'email']
+            ],
             'form1-name':[
                 ['notEmpty'],
                 ['pattern', 'name']
+            ],
+            'form2-phone':[
+                ['notEmpty'],
+                ['pattern', 'phone']
+            ],
+            'form2-email':[
+                ['notEmpty'],
+                ['pattern', 'email']
             ],
             'form2-name':[
                 ['notEmpty'],
                 ['pattern', 'name']
             ],
+            'form2-message':[
+                ['notEmpty'],
+                ['pattern', 'message']
+            ],
+            'form3-phone':[
+                ['notEmpty'],
+                ['pattern', 'phone']
+            ],
+            'form3-email':[
+                ['notEmpty'],
+                ['pattern', 'email']
+            ],
             'form3-name':[
                 ['notEmpty'],
                 ['pattern', 'name']
             ],
-            'form2-message':[
-                ['notEmpty'],
-                ['pattern', 'name']
-            ],
-
         }
     });
     valid.init();
 });
+// const valid = new Validator({
+//     selector: '#form1',
+//     pattern:{
+//         name:/[а-яё]/ig,
+//         email:/\w+\@\w+\.\w{2,}/,
+//         phone:/^\+?[78]([-()]*\d){10}/,
+
+//     },
+//     method:{
+//         'form1-phone':[
+//             ['notEmpty'],
+//             ['pattern', 'phone']
+//         ],
+//         'form1-email':[
+//             ['notEmpty'],
+//             ['pattern', 'email']
+//         ],
+//         'form1-name':[
+//             ['notEmpty'],
+//             ['pattern', 'name']
+//         ],
+//         'form2-phone':[
+//             ['notEmpty'],
+//             ['pattern', 'phone']
+//         ],
+//         'form2-email':[
+//             ['notEmpty'],
+//             ['pattern', 'email']
+//         ],
+//         'form2-name':[
+//             ['notEmpty'],
+//             ['pattern', 'name']
+//         ],
+//         'form2-message':[
+//             ['notEmpty'],
+//             ['pattern', 'name']
+//         ],
+//         'form3-phone':[
+//             ['notEmpty'],
+//             ['pattern', 'phone']
+//         ],
+//         'form3-email':[
+//             ['notEmpty'],
+//             ['pattern', 'email']
+//         ],
+//         'form3-name':[
+//             ['notEmpty'],
+//             ['pattern', 'name']
+//         ],
+//     }
+// });
+// valid.init();

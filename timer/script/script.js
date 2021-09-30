@@ -304,11 +304,11 @@ window.addEventListener('DOMContentLoaded', function(){
             },
             checks: {
                 onlyCyrillic: function(str){
-                    return /[а-яё\-\s\B]/i.test(str);
+                    return /[а-яё\s\B]/i.test(str);
                 },
 
                 onlyEmail: function(str){
-                    return /[a-z\@\-\_\.\~\*\']/i.test(str);
+                    return /[a-z\@\-\_\.\~\*\']/ig.test(str);
                 },
 
                 onlyNumber: function(str){
@@ -321,11 +321,11 @@ window.addEventListener('DOMContentLoaded', function(){
         const feedBack = ()=> {
             // ввод имени
             document.querySelectorAll('input[placeholder="Ваше имя"]').forEach((item)=>{
-                // item.addEventListener('keydown', (event)=> {
-                //     if(!helper.checks.onlyCyrillic(event.key) || event.key === 'b' || event.key === 'B'){
-                //         return event.preventDefault();
-                //     }
-                // });
+                item.addEventListener('keydown', (event)=> {
+                    if(!helper.checks.onlyCyrillic(event.key) || event.key === 'b' || event.key === 'B'){
+                        return event.preventDefault();
+                    }
+                });
 
                 item.addEventListener('blur', (event)=> {
                     event.target.value = helper.replaces.enlargerLetters(event.target.value);
@@ -336,7 +336,7 @@ window.addEventListener('DOMContentLoaded', function(){
             });
 
             // ввод email
-            document.querySelectorAll('input[placeholder="E-mail"]').forEach((item)=> {
+            document.querySelectorAll('input[class="form-email"]').forEach((item)=> {
                 item.addEventListener('keydown', (event)=> {
                     if(!helper.checks.onlyEmail(event.key) || event.key === 'b' || event.key === 'B'){
                         return event.preventDefault();
@@ -365,16 +365,15 @@ window.addEventListener('DOMContentLoaded', function(){
 
             // сообщение в блоке "ваше сообщение"
             const yourMessage = document.querySelector('input[placeholder="Ваше сообщение"]');
-            // yourMessage.addEventListener('keydown', (event)=> {
-            //     if(!helper.checks.onlyCyrillic(event.key) || event.key === 'b' || event.key === 'B'){
-            //         return event.preventDefault();
-            //     }
+            yourMessage.addEventListener('keydown', (event)=> {
+                if(!helper.checks.onlyCyrillic(event.key) || event.key === 'b' || event.key === 'B'){
+                    return event.preventDefault();
+                }
 
                 
-            // });
+            });
 
             yourMessage.addEventListener('blur', (event)=> {
-                event.target.value = helper.replaces.enlargerLetters(event.target.value);
                 event.target.value = helper.replaces.minusDelete(event.target.value);
                 event.target.value = helper.replaces.spaceDelete(event.target.value);
                 event.target.value = helper.replaces.spaceMinDelete(event.target.value);
