@@ -99,10 +99,6 @@ class Validator{
         input.error{
             background: #ff0000;
         }
-
-        input.success{
-            background: #19b5fe;
-        }
         `;
         document.head.appendChild(style);
     }
