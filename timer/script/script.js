@@ -287,6 +287,44 @@ window.addEventListener('DOMContentLoaded', function(){
         };
         teams();
 
+        function maskPhone(selector, masked = '+7 (___) ___-__-__') {
+            const elems = document.querySelectorAll(selector);
+        
+            function mask(event) {
+                const keyCode = event.keyCode;
+                const template = masked,
+                    def = template.replace(/\D/g, ""),
+                    val = this.value.replace(/\D/g, "");
+                let i = 0,
+                    newValue = template.replace(/[_\d]/g, function (a) {
+                        return i < val.length ? val.charAt(i++) || def.charAt(i) : a;
+                    });
+                i = newValue.indexOf("_");
+                if (i != -1) {
+                    newValue = newValue.slice(0, i);
+                }
+                let reg = template.substr(0, this.value.length).replace(/_+/g,
+                    function (a) {
+                        return "\\d{1," + a.length + "}";
+                    }).replace(/[+()]/g, "\\$&");
+                reg = new RegExp("^" + reg + "$");
+                if (!reg.test(this.value) || this.value.length < 5 || keyCode > 47 && keyCode < 58) {
+                    this.value = newValue;
+                }
+                if (event.type == "blur" && this.value.length < 5) {
+                    this.value = "";
+                }
+        
+            }
+        
+            for (const elem of elems) {
+                elem.addEventListener("input", mask);
+                elem.addEventListener("focus", mask);
+                elem.addEventListener("blur", mask);
+            }
+            
+        }
+
         const helper = {
             replaces: {
                 enlargerLetters: function(str){
@@ -304,7 +342,7 @@ window.addEventListener('DOMContentLoaded', function(){
             },
             checks: {
                 onlyCyrillic: function(str){
-                    return /[а-яё0-9\,\.\s\B]/i.test(str);
+                    return /[а-яё\s\B]/i.test(str);
                 },
 
                 onlyEmail: function(str){
@@ -316,60 +354,17 @@ window.addEventListener('DOMContentLoaded', function(){
                 }
             },
         };
-
-
-        // function maskPhone(selector, masked = '+7 (___) ___-__-__') {
-        //     const elems = document.querySelectorAll(selector);
-
-        //     function mask(event) {
-        //         const keyCode = event.keyCode;
-        //         const template = masked,
-        //             def = template.replace(/\D/g, ""),
-        //             val = this.value.replace(/\D/g, "");
-        //         let i = 0,
-        //             newValue = template.replace(/[_\d]/g, function (a) {
-        //                 return i < val.length ? val.charAt(i++) || def.charAt(i) : a;
-        //             });
-        //         i = newValue.indexOf("_");
-        //         if (i != -1) {
-        //             newValue = newValue.slice(0, i);
-        //         }
-        //         let reg = template.substr(0, this.value.length).replace(/_+/g,
-        //             function (a) {
-        //                 return "\\d{1," + a.length + "}";
-        //             }).replace(/[+()]/g, "\\$&");
-        //         reg = new RegExp("^" + reg + "$");
-        //         if (!reg.test(this.value) || this.value.length < 5 || keyCode > 47 && keyCode < 58) {
-        //             this.value = newValue;
-        //         }
-        //         if (event.type == "blur" && this.value.length < 5) {
-        //             this.value = "";
-        //         }
         
-        //     }
-        
-        //     for (const elem of elems) {
-        //         elem.addEventListener("input", mask);
-        //         elem.addEventListener("focus", mask);
-        //         elem.addEventListener("blur", mask);
-        //     }
-            
-        // }
-        
-        // use
-        
-
-
         // БЛОК С ОБРАТНОЙ СВЯЗЬЮ
         const feedBack = ()=> {
             // ввод имени
             const nameValidity = (selector)=> {
                 document.querySelectorAll(selector).forEach((item)=>{
-                    // item.addEventListener('keydown', (event)=> {
-                    //     if(!helper.checks.onlyCyrillic(event.key) || event.key === 'b' || event.key === 'B'){
-                    //         return event.preventDefault();
-                    //     }
-                    // });
+                    item.addEventListener('keydown', (event)=> {
+                        if(!helper.checks.onlyCyrillic(event.key) || event.key === 'b' || event.key === 'B'){
+                            return event.preventDefault();
+                        }
+                    });
 
                     item.addEventListener('blur', (event)=> {
                         event.target.value = helper.replaces.enlargerLetters(event.target.value);
@@ -379,17 +374,14 @@ window.addEventListener('DOMContentLoaded', function(){
                     });
                 });
             };
-            
-            
-
             // ввод email
             const emailValidity = (selector)=> {
                 document.querySelectorAll(selector).forEach((item)=> {
-                    // item.addEventListener('keydown', (event)=> {
-                    //     if(!helper.checks.onlyEmail(event.key) || event.key === 'b' || event.key === 'B'){
-                    //         return event.preventDefault();
-                    //     }
-                    // });
+                    item.addEventListener('keydown', (event)=> {
+                        if(!helper.checks.onlyEmail(event.key) || event.key === 'b' || event.key === 'B'){
+                            return event.preventDefault();
+                        }
+                    });
 
                     item.addEventListener('blur', (event)=> {
                         event.target.value = helper.replaces.spaceMinDelete(event.target.value);
@@ -397,24 +389,6 @@ window.addEventListener('DOMContentLoaded', function(){
                     });
                 });
             };
-            
-
-            // ввод номера телефона
-            const pasteNumberPhone = (selector)=> {
-                document.querySelectorAll(selector).forEach((item)=> {
-                    // item.addEventListener('keydown', (event)=> {
-                    //     if(!helper.checks.onlyNumber(event.key) || event.key === 'b' || event.key === 'B'){
-                    //         return event.preventDefault();
-                    //     }
-                    // });
-
-                    item.addEventListener('blur', (event)=> {
-                        event.target.value = helper.replaces.spaceMinDelete(event.target.value);
-                        event.target.value = helper.replaces.minusDelete(event.target.value);
-                    });
-                });
-            };
-            
 
             // сообщение в блоке "ваше сообщение"
             const yourMessage = document.querySelector('input[placeholder="Ваше сообщение"]');
@@ -425,7 +399,6 @@ window.addEventListener('DOMContentLoaded', function(){
             });
 
             yourMessage.addEventListener('blur', (event)=> {
-                event.target.value = helper.replaces.enlargerLetters(event.target.value);
                 event.target.value = helper.replaces.minusDelete(event.target.value);
                 event.target.value = helper.replaces.spaceDelete(event.target.value);
                 event.target.value = helper.replaces.spaceMinDelete(event.target.value);
@@ -440,12 +413,9 @@ window.addEventListener('DOMContentLoaded', function(){
                 });
             });
 
-            //проверка и запрет на ввод символов 
+            maskPhone('input[name="user_phone"]');
             nameValidity('input[placeholder="Ваше имя"]');
-            emailValidity('input[placeholder="E-mail"]');
-            emailValidity('input[placeholder="Ваш E-mail"]');
-            pasteNumberPhone('input[placeholder="Номер телефона"]');
-            pasteNumberPhone('input[placeholder="Ваш номер телефона"]');
+            emailValidity('input[type="email"]');
         };
         feedBack();
 
@@ -503,71 +473,51 @@ window.addEventListener('DOMContentLoaded', function(){
             const statusMessage = document.createElement('div');
             statusMessage.style.fontSize = '25px';
             // очистка полей ввода
-            
             const dataPreparation = (form)=> {
-                const validator = new Validator({
+                const valid = new Validator({
                     selector: `#${form.id}`,
-                    pattern: {
-                        name: /[а-яё\s]/ig,
-                        phone: /[0-9\+\-]{11}/g,
-                        email: /\w+\@\w+\.\w{2,}$/ig,
-                        message: /[а-яё0-9\.\,]/ig,
-                    },
-                    method: {
-                        'form1-name': [
-                            ['notEmpty'],
-                            ['pattern', 'name']
-                        ],
-                        'form1-phone': [
-                            ['notEmpty'],
-                            ['pattern', 'phone']
-                        ],
-                        'form1-email': [
+                    pattern:{},
+                    method:{
+                        'form1-email':[
                             ['notEmpty'],
                             ['pattern', 'email']
                         ],
-                        'form2-name': [
+                        'form1-name':[
                             ['notEmpty'],
                             ['pattern', 'name']
                         ],
-                        'form2-phone': [
-                            ['notEmpty'],
-                            ['pattern', 'phone']
-                        ],
-                        'form2-email': [
+                        'form2-email':[
                             ['notEmpty'],
                             ['pattern', 'email']
                         ],
-                        'form2-message': [
+                        'form2-name':[
+                            ['notEmpty'],
+                            ['pattern', 'name']
+                        ],
+                        'form2-message':[
                             ['notEmpty'],
                             ['pattern', 'message']
                         ],
-                        'form3-name': [
-                            ['notEmpty'],
-                            ['pattern', 'name']
-                        ],
-                        'form3-phone': [
-                            ['notEmpty'],
-                            ['pattern', 'phone']
-                        ],
-                        'form3-email': [
+                        'form3-email':[
                             ['notEmpty'],
                             ['pattern', 'email']
                         ],
-                    },
+                        'form3-name':[
+                            ['notEmpty'],
+                            ['pattern', 'name']
+                        ],
+                    }
                 });
-                validator.init();
+                valid.init();
                 form.addEventListener('submit', (event)=> {
                     
                     event.preventDefault();
                     if(event.target.matches('#form1')){
                         form.appendChild(statusMessage);
                     }
-                    let inputValidate = validator.error.length;
-                    console.log(validator.error);
+                    let inputValidate = valid.error.size;
                     if(inputValidate > 0){
-                        event.preventDefault();
-                        return;
+                        return event.preventDefault();
                     }
 
                     const formData = new FormData(form);
@@ -578,8 +528,6 @@ window.addEventListener('DOMContentLoaded', function(){
                     formData.forEach((elem, key)=> {
                         body[key] = elem;
                     });
-                    console.log(validator.error.size);
-                    console.log(body);
 
                     postData(body, ()=> {
                         statusMessage.textContent = successMessage;
