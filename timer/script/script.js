@@ -573,7 +573,7 @@ window.addEventListener('DOMContentLoaded', function(){
                     }
         
                     });
-                    request.open('GET', './server.php');
+                    request.open('POST', './server.php');
                     request.setRequestHeader('Content-Type', 'application/json');
                     request.send(JSON.stringify(body));
                 })
