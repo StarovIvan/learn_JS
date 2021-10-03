@@ -466,7 +466,7 @@ window.addEventListener('DOMContentLoaded', function(){
             const errorMessage = 'Что-то пошло не так',
                 loadedMessage = 'Загрука...',
                 successMessage = 'Данные отправлены, мы с вами скоро свяжемся';
-
+        
             const form = document.getElementById('form1');
             const form2 = document.getElementById('form2');
             const form3 = document.getElementById('form3');   
@@ -509,6 +509,7 @@ window.addEventListener('DOMContentLoaded', function(){
                     }
                 });
                 valid.init();
+        
                 form.addEventListener('submit', (event)=> {
                     
                     event.preventDefault();
@@ -519,28 +520,32 @@ window.addEventListener('DOMContentLoaded', function(){
                     if(inputValidate > 0){
                         return event.preventDefault();
                     }
-
+        
                     const formData = new FormData(form);
                     const body = {};
-
+        
                     
-
+        
                     formData.forEach((elem, key)=> {
                         body[key] = elem;
                     });
-
-                    postData(body, ()=> {
-                        statusMessage.textContent = successMessage;
+        
+                    const successfulDispatch = ()=> {
+                        statusMessage.textContent = successMessage
                         form.querySelectorAll('input').forEach((item)=> {
                             item.value = '';
                         });
-                    }, (error)=> {
+                    }
+        
+                    const errorOutput = (error)=> {
                         statusMessage.style.color = 'red';
                         statusMessage.textContent = errorMessage;
                         console.log(error);
-                    });
-                    
-
+                    }
+        
+                    postData(body)
+                        .then(successfulDispatch)
+                        .catch(errorOutput)
                 });
                 
             };
@@ -548,26 +553,31 @@ window.addEventListener('DOMContentLoaded', function(){
             dataPreparation(form2);
             dataPreparation(form3);
             
-
-            const postData = (body, success, error)=> {
-                const request = new XMLHttpRequest();
-                request.addEventListener('readystatechange', ()=> {
+        
+            const postData = (body)=> {
+        
+                return new Promise((resolve, reject) => {
+                    const request = new XMLHttpRequest();
+                
+                    request.addEventListener('readystatechange', ()=> {
                     statusMessage.textContent = loadedMessage;
                     
                     if(request.readyState !== 4){
                         return;
                     }
                     if(request.status === 200){
-                        success();
-
+                        resolve();
+        
                     } else{
-                        error(request.status);
+                        reject(request.status);
                     }
-
-                });
-                request.open('POST', './server.php');
-                request.setRequestHeader('Content-Type', 'application/json');
-                request.send(JSON.stringify(body));
+        
+                    });
+                    request.open('GET', './server.php');
+                    request.setRequestHeader('Content-Type', 'application/json');
+                    request.send(JSON.stringify(body));
+                })
+                
             };
         };
         sendForm();
