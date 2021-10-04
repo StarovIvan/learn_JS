@@ -338,6 +338,9 @@ window.addEventListener('DOMContentLoaded', function(){
                 },
                 minusDelete: function(str){
                     return str.replace(/(\-+)+/g, '-');
+                },
+                getFirstCapitalLetter: function(str){
+                    return str.replace(/(\.\s*|^)[а-яёa-z]/g, function(x) {return x.toUpperCase();});
                 }
             },
             checks: {
@@ -351,6 +354,9 @@ window.addEventListener('DOMContentLoaded', function(){
 
                 onlyNumber: function(str){
                     return /[0-9\B\-]/i.test(str);
+                },
+                messageBlock: function(str){
+                    return /[а-яё\s\B\.\,]/i.test(str);
                 }
             },
         };
@@ -390,15 +396,21 @@ window.addEventListener('DOMContentLoaded', function(){
                 });
             };
 
+            // ввод номера телефона
+            const numberValidality = (selector)=> {
+                document.querySelectorAll(selector)
+            }
+
             // сообщение в блоке "ваше сообщение"
             const yourMessage = document.querySelector('input[placeholder="Ваше сообщение"]');
             yourMessage.addEventListener('keydown', (event)=> {
-                if(!helper.checks.onlyCyrillic(event.key) || event.key === 'b' || event.key === 'B'){
+                if(!helper.checks.messageBlock(event.key) || event.key === 'b' || event.key === 'B'){
                     return event.preventDefault();
                 }
             });
 
             yourMessage.addEventListener('blur', (event)=> {
+                event.target.value = helper.replaces.getFirstCapitalLetter(event.target.value);
                 event.target.value = helper.replaces.minusDelete(event.target.value);
                 event.target.value = helper.replaces.spaceDelete(event.target.value);
                 event.target.value = helper.replaces.spaceMinDelete(event.target.value);
@@ -414,6 +426,7 @@ window.addEventListener('DOMContentLoaded', function(){
             });
 
             maskPhone('input[name="user_phone"]');
+            // numberValidality('input[name="user_phone"]');
             nameValidity('input[placeholder="Ваше имя"]');
             emailValidity('input[type="email"]');
         };
@@ -472,39 +485,50 @@ window.addEventListener('DOMContentLoaded', function(){
             const form3 = document.getElementById('form3');   
             const statusMessage = document.createElement('div');
             statusMessage.style.fontSize = '25px';
-            // очистка полей ввода
+
+
             const dataPreparation = (form)=> {
                 const valid = new Validator({
                     selector: `#${form.id}`,
-                    pattern:{},
+                    pattern:{
+                        number: /^\+7\s[(]?\d{3}\)\s\d{3}-\d{2}-\d{2}$/
+                    },
                     method:{
-                        'form1-email':[
-                            ['notEmpty'],
-                            ['pattern', 'email']
-                        ],
                         'form1-name':[
                             ['notEmpty'],
                             ['pattern', 'name']
-                        ],
-                        'form2-email':[
-                            ['notEmpty'],
-                            ['pattern', 'email']
                         ],
                         'form2-name':[
                             ['notEmpty'],
                             ['pattern', 'name']
                         ],
-                        'form2-message':[
+                        'form3-name':[
                             ['notEmpty'],
-                            ['pattern', 'message']
+                            ['pattern', 'name']
+                        ],
+                        'form1-email':[
+                            ['notEmpty'],
+                            ['pattern', 'email']
+                        ],
+                        'form2-email':[
+                            ['notEmpty'],
+                            ['pattern', 'email']
                         ],
                         'form3-email':[
                             ['notEmpty'],
                             ['pattern', 'email']
                         ],
-                        'form3-name':[
+                        'form1-phone':[
                             ['notEmpty'],
-                            ['pattern', 'name']
+                            ['pattern', 'number']
+                        ],
+                        'form2-phone':[
+                            ['notEmpty'],
+                            ['pattern', 'number']
+                        ],
+                        'form3-phone':[
+                            ['notEmpty'],
+                            ['pattern', 'number']
                         ],
                     }
                 });
@@ -516,36 +540,35 @@ window.addEventListener('DOMContentLoaded', function(){
                     if(event.target.matches('#form1')){
                         form.appendChild(statusMessage);
                     }
-                    let inputValidate = valid.error.size;
+                    let inputValidate = event.target.querySelectorAll('.error').length;
                     if(inputValidate > 0){
                         return event.preventDefault();
-                    }
+                    } 
         
                     const formData = new FormData(form);
                     const body = {};
-        
-                    
         
                     formData.forEach((elem, key)=> {
                         body[key] = elem;
                     });
         
-                    const successfulDispatch = ()=> {
-                        statusMessage.textContent = successMessage
-                        form.querySelectorAll('input').forEach((item)=> {
-                            item.value = '';
-                        });
-                    }
-        
-                    const errorOutput = (error)=> {
-                        statusMessage.style.color = 'red';
-                        statusMessage.textContent = errorMessage;
-                        console.log(error);
-                    }
-        
                     postData(body)
-                        .then(successfulDispatch)
-                        .catch(errorOutput)
+                        .then((response)=> {
+                            if(response.status !== 200){
+                                throw new Error(`status not defined: ${response.status}`)
+                            }
+                            statusMessage.textContent = successMessage
+                        })
+                        .catch((error)=> {
+                            statusMessage.style.color = 'red';
+                            statusMessage.textContent = errorMessage;
+                            console.error(error);
+                        })
+                        .finally(()=> {
+                            form.querySelectorAll('input').forEach((item)=> {
+                                item.value = '';
+                            });
+                        })
                 });
                 
             };
@@ -553,31 +576,15 @@ window.addEventListener('DOMContentLoaded', function(){
             dataPreparation(form2);
             dataPreparation(form3);
             
-        
             const postData = (body)=> {
-        
-                return new Promise((resolve, reject) => {
-                    const request = new XMLHttpRequest();
-                
-                    request.addEventListener('readystatechange', ()=> {
-                    statusMessage.textContent = loadedMessage;
-                    
-                    if(request.readyState !== 4){
-                        return;
-                    }
-                    if(request.status === 200){
-                        resolve();
-        
-                    } else{
-                        reject(request.status);
-                    }
-        
-                    });
-                    request.open('POST', './server.php');
-                    request.setRequestHeader('Content-Type', 'application/json');
-                    request.send(JSON.stringify(body));
+                statusMessage.textContent = loadedMessage;
+                return fetch('./server.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(body)
                 })
-                
             };
         };
         sendForm();
