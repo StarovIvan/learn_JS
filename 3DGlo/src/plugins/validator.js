@@ -89,6 +89,7 @@ class Validator {
             font-size: 13px;
             color: red;
             font-family: sans-serif;
+        }
         `;
         document.head.appendChild(style);
     }

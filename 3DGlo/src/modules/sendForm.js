@@ -8,6 +8,7 @@ const sendForm = ()=> {
     const form3 = document.getElementById('form3');   
     const statusMessage = document.createElement('div');
     statusMessage.style.fontSize = '25px';
+    statusMessage.style.color = '#fff';
 
 
     const dataPreparation = (form)=> {
@@ -60,7 +61,7 @@ const sendForm = ()=> {
         form.addEventListener('submit', (event)=> {
             
             event.preventDefault();
-            if(event.target.matches('#form1')){
+            if(event.target.matches('form')){
                 form.appendChild(statusMessage);
             }
             let inputValidate = event.target.querySelectorAll('.error').length;
@@ -76,23 +77,22 @@ const sendForm = ()=> {
             });
 
             postData(body)
-                .then((response)=> {
-                    console.log(response);
-                    if(response.status !== 201){
-                        throw new Error(`status not defined: ${response.status}`)
-                    }
-                    statusMessage.textContent = successMessage
-                })
-                .catch((error)=> {
-                    statusMessage.style.color = 'red';
-                    statusMessage.textContent = errorMessage;
-                    console.error(error);
-                })
-                .finally(()=> {
-                    form.querySelectorAll('input').forEach((item)=> {
-                        item.value = '';
-                    });
-                })
+            .then((response)=> {
+                if(response.status !== 200){
+                    throw new Error(`status not defined: ${response.status}`)
+                }
+                statusMessage.textContent = successMessage
+            })
+            .catch((error)=> {
+                statusMessage.style.color = 'red';
+                statusMessage.textContent = errorMessage;
+                console.error(error);
+            })
+            .finally(()=> {
+                form.querySelectorAll('input').forEach((item)=> {
+                    item.value = '';
+                });
+            })
         });
         
     };
@@ -100,7 +100,7 @@ const sendForm = ()=> {
     dataPreparation(form2);
     dataPreparation(form3);
     
-    const postData = async (body)=> {
+    const postData = (body)=> {
         statusMessage.textContent = loadedMessage;
         return fetch('./server.php', {
             method: 'POST',
