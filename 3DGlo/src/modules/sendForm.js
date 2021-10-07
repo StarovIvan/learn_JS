@@ -57,15 +57,14 @@ const sendForm = ()=> {
             }
         });
         valid.init();
-
         form.addEventListener('submit', (event)=> {
             
             event.preventDefault();
             if(event.target.matches('form')){
                 form.appendChild(statusMessage);
             }
-            let inputValidate = event.target.querySelectorAll('.error').length;
-            if(inputValidate > 0){
+
+            if(valid.error.size > 0){
                 return event.preventDefault();
             } 
 
@@ -75,13 +74,16 @@ const sendForm = ()=> {
             formData.forEach((elem, key)=> {
                 body[key] = elem;
             });
-
+        
             postData(body)
             .then((response)=> {
                 if(response.status !== 200){
                     throw new Error(`status not defined: ${response.status}`)
                 }
                 statusMessage.textContent = successMessage
+                setTimeout(()=> {
+                    statusMessage.textContent = '';
+                }, 3000)
             })
             .catch((error)=> {
                 statusMessage.style.color = 'red';
