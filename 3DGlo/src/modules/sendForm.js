@@ -73,7 +73,13 @@ const sendForm = ()=> {
 
             formData.forEach((elem, key)=> {
                 body[key] = elem;
-            });
+            });;
+
+            const hiddenMessage = (elem)=> {
+                setTimeout(()=> {
+                    elem.remove();
+                }, 2000)
+            }
         
             postData(body)
             .then((response)=> {
@@ -81,14 +87,13 @@ const sendForm = ()=> {
                     throw new Error(`status not defined: ${response.status}`)
                 }
                 statusMessage.textContent = successMessage
-                setTimeout(()=> {
-                    statusMessage.textContent = '';
-                }, 3000)
+                hiddenMessage(statusMessage)
             })
             .catch((error)=> {
                 statusMessage.style.color = 'red';
                 statusMessage.textContent = errorMessage;
                 console.error(error);
+                hiddenMessage(statusMessage)
             })
             .finally(()=> {
                 form.querySelectorAll('input').forEach((item)=> {

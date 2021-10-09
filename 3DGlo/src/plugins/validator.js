@@ -99,7 +99,7 @@ class Validator {
             this.pattern.name = /[а-яё]/ig;
         }
         if(!this.pattern.email){
-            this.pattern.email = /\w+\@\w+\.\w{2,}/;
+            this.pattern.email = /\w+\@\w+(\.\w{2,})$/;
         } 
         if(!this.pattern.number){
             this.pattern.number = /\d{11}?/;
